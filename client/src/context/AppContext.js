@@ -48,7 +48,6 @@ function AppProvider({ children }){
     useEffect(() => {
         async function authenticateUser(){
             const status = await getAuthStatus()
-            console.log(status)
             setIsAuthenticated(status)
         }
         authenticateUser()

@@ -8,6 +8,14 @@ body {
   margin: 0;
 }
 
+.dark body{
+  background-color: black;
+}
+
+.light body{
+  background-color: #FFFFFF;
+}
+
 .poster-img{
   height: 238px;
   width: 158px;
@@ -46,8 +54,6 @@ body {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #212529;
-  background-color: #E5E7EB;
   background-clip: padding-box;
   border-style: none;
   -webkit-appearance: none;
@@ -63,29 +69,29 @@ body {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #212529;
-  background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   border-radius: .25rem;
 }
+
 small {
   font-weight: 500;
   display: flex;
   flex-direction: row;
   margin-top: 15px;
   margin-bottom: 15px;
-  color: #4B5563;
+  color: #9CA3AF;
 }
+
 small:before, small:after{
   content: "";
   flex: 1 1;
   border-bottom: 1px solid #9CA3AF;
   margin: auto;
 }
+
 small:before {
   margin-right: 10px
 }

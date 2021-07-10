@@ -65,11 +65,11 @@ export default function Search() {
             let options = searchResults.slice(0, 5)
             return(
                 <div className="relative container">
-                    <div className="absolute bg-white shadow-lg w-full">
+                    <div className="absolute bg-white dark:bg-search-dark dark:text-white shadow-lg w-full">
                         {options.map((item, index) => {
                             return(
                                 <Link onClick={() => selectOption(item)} to = {`/${item.media_type}/${item.id}`}>
-                                    <div className="p-2 hover:bg-gray-100 text-black">
+                                    <div className="p-2 hover:bg-gray-100 drark:hover:bg-gray-700">
                                         {item.original_title || item.name || item.original_name} ({getReleaseYear(item)}{getMediaType(item)})
                                     </div>
                                 </Link>
@@ -84,9 +84,9 @@ export default function Search() {
     return (
         <>
         <div className="hidden md:inline-block">
-            <div className="relative mr-6">
+            <div className="relative mr-2 xl:mr-6">
                     <div className="absolute left-2 top-2">
-                        <div className="inline-block text-gray-600">
+                        <div className="inline-block text-gray-600 dark:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
@@ -104,7 +104,7 @@ export default function Search() {
                         type="search"
                         placeholder="Search movies and shows"
                         style={{minWidth:'300px'}} 
-                        className="search p-2 pl-8 focus:outline-none"
+                        className="search p-2 pl-8 focus:outline-none bg-gray-200 dark:bg-search-dark dark:text-white"
                     />
             </div>
             <Results/>
@@ -112,7 +112,7 @@ export default function Search() {
         <div className="md:hidden">
             <div className="relative">
                 <div className="absolute left-3 top-3">
-                    <div className="inline-block text-gray-600">
+                    <div className="inline-block text-gray-600 dark:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
@@ -129,7 +129,7 @@ export default function Search() {
                     }}
                     type="search"
                     placeholder="Search movies and shows" 
-                    className="search p-3 pl-9 focus:outline-none w-full"
+                    className="search p-3 pl-9 w-full focus:outline-none bg-gray-200 dark:bg-search-dark dark:text-white"
                 />
             </div>
             <Results/>

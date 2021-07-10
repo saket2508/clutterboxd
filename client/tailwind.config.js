@@ -1,6 +1,8 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
       animation: {
@@ -10,6 +12,30 @@ module.exports = {
       fontFamily:{
         body:['Montserrat', 'sans-serif'],
         heading: ['Open Sans', 'sans-serif']
+      },
+      colors:{
+        primary:{
+          light: colors.white,
+          dark: colors.black
+        },
+        card:{
+          light:colors.white,
+          dark:colors.gray[900]
+        },
+        search:{
+          light: colors.gray[200],
+          dark: colors.gray[700]
+        },
+        text:{
+          primary:{
+            light:colors.black,
+            dark:colors.white
+          },
+          secondary:{
+            light: colors.gray[600],
+            dark: colors.gray[400]
+          }
+        }
       }
     },
   },

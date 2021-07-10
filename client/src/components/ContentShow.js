@@ -1,11 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'; 
 import styled from 'styled-components';
 import { AppContext } from '../context/AppContext';
+import { ThemeContext } from '../context/ThemeContext';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios';
 
 export default function ContentShow({show}) {
+
+    const { watchlist, setWatchlist } = useContext(AppContext)
+    const { colorTheme } = useContext(ThemeContext)
+
 
     const getShowTitle = show => {
         let title =  show.title || show.original_title || show.original_name
@@ -102,8 +107,6 @@ export default function ContentShow({show}) {
     const tmdb_rating = show.vote_average
     const release_date = show.first_air_date
 
-    const { watchlist, setWatchlist } = useContext(AppContext)
-
     const checkIfShowIsInDb = () =>{
         return watchlist && watchlist.find(item => (item.index === id && item.media_type === media_type)) ? true : false
     }
@@ -117,8 +120,8 @@ export default function ContentShow({show}) {
         setShowInList(res)
     }, [watchlist])
 
-    const CoverImage = styled.div`
-        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 68%, rgb(255, 255, 255) 100%), url(https://image.tmdb.org/t/p/w500${show.poster_path});
+    const CoverImageLight = styled.div`
+        background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 68%, rgb(0, 0, 0) 100%), url(https://image.tmdb.org/t/p/w500${show.poster_path});
         position: relative;
         min-width: 300px;
         width: 300px;
@@ -131,11 +134,11 @@ export default function ContentShow({show}) {
         border:0;
         min-width:100%;
         background-size: cover;
-        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 68%, rgb(255, 255, 255) 100%), url(https://www.themoviedb.org/t/p/w1000_and_h563_face${show.backdrop_path});
+        background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 68%, rgb(0, 0, 0) 100%), url(https://www.themoviedb.org/t/p/w1000_and_h563_face${show.backdrop_path});
     }
 
     @media(max-width: 600px){
-        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 68%, rgb(255, 255, 255) 100%), url(https://image.tmdb.org/t/p/w500${show.poster_path});
+        background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 68%, rgb(0, 0, 0) 100%), url(https://image.tmdb.org/t/p/w500${show.poster_path});
         position: relative;
         min-width: 300px;
         width: 300px;
@@ -143,6 +146,34 @@ export default function ContentShow({show}) {
         background-size: cover;
         border:0;
     }
+    `
+
+    const CoverImageDark = styled.div`
+        background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 68%, rgb(0, 0, 0) 100%), url(https://image.tmdb.org/t/p/w500${show.poster_path});
+        position: relative;
+        min-width: 300px;
+        width: 300px;
+        height: 450px;
+        background-size: cover;
+        border:0;
+
+    @media(max-width: 1200px){
+        position:relative;
+        border:0;
+        min-width:100%;
+        background-size: cover;
+        background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 68%, rgb(0, 0, 0) 100%), url(https://www.themoviedb.org/t/p/w1000_and_h563_face${show.backdrop_path});
+    }
+
+    @media(max-width: 600px){
+        background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 68%, rgb(0, 0, 0) 100%), url(https://image.tmdb.org/t/p/w500${show.poster_path});
+        position: relative;
+        min-width: 300px;
+        width: 300px;
+        height: 450px;
+        background-size: cover;
+        border:0;
+     }
     `
 
     const AddToList = async() => {
@@ -168,6 +199,7 @@ export default function ContentShow({show}) {
         try {
             const res = await axios.delete(`http://localhost:5000/db/delete/tv/${id}`, {
                 withCredentials: true,
+
             })
             console.log(res.data)
             const {success, message} = res.data
@@ -210,7 +242,7 @@ export default function ContentShow({show}) {
         <>
         <div className="relative w-full h-full">
             <div className="flex flex-col xl:flex-row items-center xl:items-start xl:px-20 p-6">
-                    <CoverImage/>
+                    {colorTheme === 'light' ? <CoverImageDark/> : <CoverImageLight/>}
                     <div className="mt-8 xl:ml-8 flex flex-col">
                         <div className="flex justify-between w-100 items-center">
                             <div className="flex flex-wrap gap-1">
@@ -221,11 +253,11 @@ export default function ContentShow({show}) {
                                     {getReleaseYear(show)}
                                 </div>
                             </div>
-                            {showInList===true ? <button onClick={() => RemoveFromList()} className="bg-white text-red-600 shadow-xl rounded-full p-2">
+                            {showInList===true ? <button onClick={() => RemoveFromList()} className="bg-white dark:bg-card-dark text-red-600 shadow-xl rounded-full p-2">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                             </svg>
-                            </button> : <button onClick={() => AddToList()} className="bg-white text-black shadow-xl rounded-full p-2">
+                            </button> : <button onClick={() => AddToList()} className="bg-white dark:bg-card-dark text-black dark:text-white shadow-xl rounded-full p-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                 </svg>

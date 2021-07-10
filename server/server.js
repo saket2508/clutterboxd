@@ -1,12 +1,12 @@
 const express = require('express')
-var app = express()
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-app.use(cookieParser())
 const passport = require('passport')
 const googleStrategy = require('./oauth2/googleStrategy')
 
+var app = express()
 
+app.use(cookieParser())
 
 const authRoutes = require('./routes/auth');
 const dbRoutes = require('./routes/db');

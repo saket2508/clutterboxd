@@ -5,12 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import AppProvider from "./context/AppContext";
+import ThemeProvider from "./context/ThemeContext";
 
 
 ReactDOM.render(
   <React.StrictMode>
     <AppProvider>
-      <App />
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
     </AppProvider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -10,7 +10,7 @@ import List from '../pages/List';
 export default function AppRoutes(){
     return (
         <Router>
-            <div className="w-full font-body">
+            <div className="w-full font-body text-black dark:text-white">
                  <Navbar/>
                 <main className="mt-20 mb-20 sm:mb-0">
                     <Route exact path="/home" component={Home}/>

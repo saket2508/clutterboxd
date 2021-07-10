@@ -47,7 +47,7 @@ export default function Home() {
         return(
         <div className="relative z-10 w-full">
             <div className="flex justify-center items-center mt-20 pt-20">
-                <p className="text-lg text-gray-700 font-bold tracker-wide">
+                <p className="text-lg text-gray-700 dark:text-white font-bold tracker-wide">
                     Could not get data from the API :(
                 </p>
             </div>

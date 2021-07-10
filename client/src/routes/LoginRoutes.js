@@ -6,7 +6,7 @@ import Register from '../pages/Register';
 export default function LoginRoutes(){
     return(
         <Router>
-            <div className="w-full font-heading">
+            <div className="w-full font-heading text-black dark:text-white">
                 <Route exact path="/login" component={Login}/>
                 <Route exact path="/register" component={Register}/>
                 <Route exact path="/">
