@@ -1,9 +1,12 @@
 const express = require('express')
 var app = express()
 const cors = require('cors')
-const cookieParser = require('cookie-parser');
-
+const cookieParser = require('cookie-parser')
 app.use(cookieParser())
+const passport = require('passport')
+const googleStrategy = require('./oauth2/googleStrategy')
+
+
 
 const authRoutes = require('./routes/auth');
 const dbRoutes = require('./routes/db');
@@ -15,8 +18,14 @@ const corsOptions ={
 }
 
 // Middleware
+app.use(passport.initialize())
 app.use(express.json())
 app.use(cors(corsOptions))
+
+app.get('/', passport.authenticate(
+    'google', 
+    {scope: [ 'email', 'profile' ]}
+))
 
 app.use('/auth', authRoutes)
 app.use('/db', dbRoutes)

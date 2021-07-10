@@ -8,6 +8,7 @@ function AppProvider({ children }){
     const [ isAuthenticated, setIsAuthenticated ] = useState(null)
     const [ currentUser, setCurrentUser ] = useState(null)
     const [ watchlist, setWatchlist ] = useState(null)
+    const [ error, setError ] = useState(null)
 
     const getAuthStatus =  async() => {
         try{
@@ -26,6 +27,7 @@ function AppProvider({ children }){
             const user = res.data
             return user 
         } catch(err){
+            setError(true)
             console.log(err.message)
             return
         }
@@ -37,6 +39,7 @@ function AppProvider({ children }){
             const {watchlist} = res.data
             return watchlist
         } catch(err){
+            setError(true)
             console.error(err.message)
             return
         }   
@@ -45,6 +48,7 @@ function AppProvider({ children }){
     useEffect(() => {
         async function authenticateUser(){
             const status = await getAuthStatus()
+            console.log(status)
             setIsAuthenticated(status)
         }
         authenticateUser()
@@ -72,6 +76,7 @@ function AppProvider({ children }){
             setCurrentUser,
             watchlist,
             setWatchlist,
+            error
         }}>
             {children}
         </AppContext.Provider>

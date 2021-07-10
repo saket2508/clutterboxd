@@ -69,7 +69,7 @@ export default function Search() {
                         {options.map((item, index) => {
                             return(
                                 <Link onClick={() => selectOption(item)} to = {`/${item.media_type}/${item.id}`}>
-                                    <div className="p-2 hover:bg-gray-100 font-semibold text-sm text-black">
+                                    <div className="p-2 hover:bg-gray-100 text-black">
                                         {item.original_title || item.name || item.original_name} ({getReleaseYear(item)}{getMediaType(item)})
                                     </div>
                                 </Link>

@@ -4,9 +4,10 @@ import LoginRoutes from "./routes/LoginRoutes";
 import { AppContext } from "./context/AppContext";
 import { BrowserRouter as Router, Route } from "react-router-dom"; 
 import LoadingSpinner from "./components/LoadingSpinner";
+import Error from "./components/Error";
 
 function App() {
-  const { isAuthenticated, currentUser, watchlist } = useContext(AppContext)
+  const { isAuthenticated, currentUser, watchlist, error } = useContext(AppContext)
   
   if(isAuthenticated === null){
     return(
@@ -21,6 +22,12 @@ function App() {
       <div className="w-full">
         <LoadingSpinner/>
       </div>
+    )
+  }
+
+  if(error){
+    return(
+      <Error/>
     )
   }
 

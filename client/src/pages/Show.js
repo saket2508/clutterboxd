@@ -1,10 +1,8 @@
 import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react';
-
 import ContentShow from '../components/ContentShow';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useParams } from 'react-router-dom';
-import { AppContext } from '../context/AppContext';
 
 
 const APIkey = process.env.REACT_APP_TMDB_API_KEY
@@ -13,7 +11,6 @@ export default function Show({match}) {
 
     const { id } = useParams()
     const [ showInfo, setShowInfo ] = useState()
-    const { isAuthenticated } = useContext(AppContext)
     
     useEffect(() => {
         async function getData(){

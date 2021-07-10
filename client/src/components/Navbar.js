@@ -5,13 +5,13 @@ import { AppContext } from '../context/AppContext';
 
 export default function Navbar() {
 
-    const { currentUser, isDataLoaded, isAuthenticated } = useContext(AppContext)
+    const { currentUser, isAuthenticated } = useContext(AppContext)
 
     return (
         <div className="fixed top-0 bg-white shadow px-6 py-4 w-full z-50">
             <div className="hidden md:flex w-100 justify-between items-center">
-                        <Link to = '/'>
-                            <div className="font-bold text-gray-700 tracker-wide">
+                        <Link to = '/home'>
+                            <div className="font-bold text-gray-700 tracker-wide font-heading">
                                 NETFLIX WATCHLIST
                             </div>
                         </Link>
@@ -20,7 +20,7 @@ export default function Navbar() {
                     {isAuthenticated ? <div>
                     {currentUser 
                     && <div className="flex items-end">
-                        <div className="flex flex-col text-xs items-center px-4">
+                        <div className="flex flex-col text-xs font-medium items-center px-4">
                             Hello, {currentUser.user.user_name}
                             <div className="font-medium pt-1 hover:underline">
                                 LOG OUT

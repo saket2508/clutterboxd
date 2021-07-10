@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'; 
 import styled from 'styled-components';
 import { AppContext } from '../context/AppContext';
-import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios';
-import { Link } from "react-router-dom"; 
 
 export default function ContentMovie({movie}) {
 
@@ -55,6 +52,39 @@ export default function ContentMovie({movie}) {
         }
     }
 
+    const DisplayRating = ({movie}) => {
+        if(!movie.vote_average){
+            return <div></div>
+        }
+        let rating_out_of_five = Math.round(parseInt(movie.vote_average)/2)
+       return(
+           <div className="inline-flex pt-4 text-yellow-300">
+               { Array(5).fill().map((d, i) => {
+                   if(i <= rating_out_of_five-1)
+                    {
+                        return(
+                        <div key={i} className="px-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                        </div>     
+                        )
+                    } else{
+                        return(
+                            <div key={i} className="px-1 text-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                            </div>     
+                            )
+                    }
+
+                })}
+           </div>
+       )
+
+    } 
+
     const getOverview = movie => {
         return  `${movie.overview}`
     }
@@ -79,7 +109,7 @@ export default function ContentMovie({movie}) {
     const overview = JSON.stringify(getOverview(movie))
     const cast_and_credits = getCast(movie)
     const runtime = movie.runtime
-    const tmdb_rating = movie.tmdb_rating
+    const tmdb_rating = movie.vote_average
     const release_date = movie.release_date
 
     const { watchlist, setWatchlist } = useContext(AppContext)
@@ -96,6 +126,7 @@ export default function ContentMovie({movie}) {
         let res = checkIfMovieIsInDb()
         setMovieInList(res)
     }, [watchlist])
+  
     
 
     const CoverImage = styled.div`
@@ -126,8 +157,6 @@ export default function ContentMovie({movie}) {
         }
     `
 
-    console.log(movieInList)
-
     const AddToList = async() => {
         try {
             const res = await axios.post('http://localhost:5000/db/add/movie', {
@@ -136,11 +165,9 @@ export default function ContentMovie({movie}) {
                 item: {title, poster_img, backdrop_img, genres, overview, cast_and_credits, runtime, tmdb_rating, release_date}
             }, {
                 withCredentials: true,
-                headers:{jwt_token : localStorage.jwt_token}
             })
             console.log(res.data)
             const {newItem, message, success} = res.data
-
             setWatchlist(watchlist => [...watchlist, newItem])
             setNotif({message, success})
         } catch (error) {
@@ -153,7 +180,6 @@ export default function ContentMovie({movie}) {
         try {
             const res = await axios.delete(`http://localhost:5000/db/delete/movie/${id}`, {
                 withCredentials: true,
-                headers:{jwt_token : localStorage.jwt_token}
             })
             console.log(res.data)
             const {success, message} = res.data
@@ -165,7 +191,12 @@ export default function ContentMovie({movie}) {
         }
     }
 
-    const SnackbarNotif = ({ open, message }) => {
+    const Notification = ({ open, success, message }) => {
+
+        function Alert(props) {
+            return <MuiAlert elevation={6} variant="filled" {...props} />;
+        }
+
         return(
             <Snackbar
                 anchorOrigin={{
@@ -175,20 +206,14 @@ export default function ContentMovie({movie}) {
                 open={open}
                 autoHideDuration={6000}
                 onClose={() => setNotif(null)}
-                message={message}
-                action={
-                <React.Fragment>
-                    <Button color="primary" size="small">
-                        <Link to="/list">
-                            VIEW
-                        </Link>
-                    </Button>
-                    <IconButton size="small" aria-label="close" color="inherit" onClick={() => setNotif(null)}>
-                    <CloseIcon fontSize="small" />
-                    </IconButton>
-                </React.Fragment>
-                }
-            />
+            >   
+                {success===true ? <Alert onClose={() => setNotif(null)} severity="success">
+                    {message}
+                </Alert> : <Alert onClose={() => setNotif(null)} severity="error">
+                    {message}
+                </Alert>}
+
+            </Snackbar>
         )
     }
 
@@ -201,10 +226,10 @@ export default function ContentMovie({movie}) {
                     <div className="mt-8 xl:ml-8 flex flex-col">
                         <div className="flex justify-between w-100 items-center">
                             <div className="flex flex-wrap">
-                                <div className="text-2xl xl:text-3xl font-medium">
+                                <div className="text-2xl xl:text-3xl font-medium font-heading">
                                     {getMovieTitle(movie)}
                                 </div>
-                                <div className="text-2xl xl:text-3xl pl-1 font-light">
+                                <div className="text-2xl xl:text-3xl pl-1 font-light font-heading">
                                     {getReleaseYear(movie)}
                                 </div>
                             </div>
@@ -218,6 +243,7 @@ export default function ContentMovie({movie}) {
                                 </svg>
                             </button>}
                         </div>
+                        <DisplayRating movie={movie}/>
                         <ul className="mt-3 list-disc list-inside flex flex-col gap-2 font-light">
                             <li>
                                 {getGenres(movie)}
@@ -227,7 +253,7 @@ export default function ContentMovie({movie}) {
                             </li>
                         </ul>
                         <div className="mt-6">
-                            <div className="text-xl">
+                            <div className="text-xl font-heading">
                                 Overview
                             </div>
                             <p className="mt-3 leading-relaxed font-light">
@@ -235,7 +261,7 @@ export default function ContentMovie({movie}) {
                             </p>
                         </div>
                         <div className="mt-6">
-                            <div className="text-xl">
+                            <div className="text-xl font-heading">
                                 Cast
                             </div>
                             <div className="flex flex-wrap mt-3 font-light">
@@ -245,7 +271,7 @@ export default function ContentMovie({movie}) {
                     </div>
                 </div>
         </div>
-        {notif && <SnackbarNotif open={true} message = {notif.message}/>}
+        {notif && <Notification open={true} message = {notif.message} success={notif.success}/>}
     </>
     )
 }

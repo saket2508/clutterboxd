@@ -1,12 +1,17 @@
-const router = require('express').Router();
-const pool = require('../../database/config');
-const bcrypt = require('bcrypt');
-const jwtGenerator = require('../../utils/jwtGenerator');
-const authorize = require('../../middleware/authorize');
+const router = require('express').Router()
+const pool = require('../../database/config')
+const bcrypt = require('bcrypt')
+const jwtGenerator = require('../../utils/jwtGenerator')
+const authorize = require('../../middleware/authorize')
+const validate = require('../../middleware/validation')
+const passport = require('passport')
+const cookieParser = require('cookie-parser')
+const googleStrategy = require('../../oauth2/googleStrategy')
 
 const maxAge = 3600*1000
+const APP_REDIRECT_URI = 'http://localhost:3000'
 
-router.post('/register', async(req, res) => {
+router.post('/register', validate, async(req, res) => {
     try{
         const { name, email, password } = req.body
         const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [
@@ -34,7 +39,7 @@ router.post('/register', async(req, res) => {
     }
 })
 
-router.post('/login', async(req, res) => {
+router.post('/login', validate, async(req, res) => {
     try{
         const { email, password } = req.body
 
@@ -84,5 +89,20 @@ router.get("/", authorize, (req, res) => {
       res.status(500).send({"mesage": "Server error"});
     }
   });
+
+// Google auth callback URI
+router.get('/google/callback', passport.authenticate(
+  'google', 
+  {scope: [ 'email', 'profile' ]},
+), (req, res) => {
+  try {
+    const token = jwtGenerator(req.user.user_id)
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge })
+    res.redirect(`${APP_REDIRECT_URI}`)
+  } catch (error) {
+    console.error(error.message)
+    res.redirect(`${APP_REDIRECT_URI}`)
+  }
+})
 
 module.exports = router;

@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import ContentMovie from '../components/ContentMovie';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useParams } from 'react-router-dom';
-import { AppContext } from '../context/AppContext';
 
 
 const APIkey = process.env.REACT_APP_TMDB_API_KEY
@@ -12,7 +11,6 @@ export default function Movie({match}) {
 
     const { id } = useParams()
     const [ movieInfo, setMovieInfo ] = useState()
-    const { isAuthenticated } = useContext(AppContext)
 
     
     useEffect(() => {

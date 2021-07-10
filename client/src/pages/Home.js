@@ -47,7 +47,7 @@ export default function Home() {
         return(
         <div className="relative z-10 w-full">
             <div className="flex justify-center items-center mt-20 pt-20">
-                <p className="text-small text-gray-700 font-bold tracker-wide">
+                <p className="text-lg text-gray-700 font-bold tracker-wide">
                     Could not get data from the API :(
                 </p>
             </div>
@@ -58,10 +58,10 @@ export default function Home() {
     return (
         <div className="relative z-10 w-full">
             <div className="w-full p-6">
-                <div className="text-3xl pb-8 text-gray-700 font-semibold tracker-wide">
+                <div className="text-2xl xl:text-3xl pb-6 tracker-wide font-heading">
                     Welcome, {currentUser.user.user_name}
                 </div>
-                <div className="md:text-xl tracker-wide text-gray-500">
+                <div className="md:text-lg tracker-wid font-heading">
                     TRENDING MOVIES
                 </div>
                 <div className="mt-6">
@@ -82,7 +82,7 @@ export default function Home() {
                 </div> 
             </div>
             <div className="w-full p-6">
-                <div className="md:text-xl tracker-wide text-gray-500">
+                <div className="md:text-lg tracker-wide font-heading">
                     TRENDING SHOWS
                 </div>
                 <div className="mt-6">
