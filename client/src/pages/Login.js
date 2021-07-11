@@ -33,10 +33,16 @@ export default function Login(props) {
                     props.history.push('/')
                     window.location.reload()
             }
-        } catch (error) {
-            console.error(error.message)
+        } catch (err) {
+            console.error(err.message)
             setLoading(false)
-            setNotif({message: error.response.data, success: false})
+            if(err.response){
+                const {error} = err.response.data
+                setNotif({success: false, message: error})
+            }
+            else{
+                setNotif({success: false, message: 'Error signing in user'})   
+            }
         }
     }
 
@@ -48,11 +54,11 @@ export default function Login(props) {
                     <div className="mt-1 text-center font-bold tracker-wide light:text-gray-700 text-xl font-heading">
                         NETFLIX WATCHLIST
                     </div>
-                    <p className="leading-snug ttext-text-secondary-light dark:text-text-secondary-dark my-3 mt-3 text-center text-sm">
+                    <p className="leading-snug text-text-secondary-light dark:text-text-secondary-dark my-3 mt-3 text-center text-sm">
                         Sign in to add movies and shows to your watchlist
                     </p>
                     <div className="w-full mt-6">
-                        <button className="w-32 p-1 rounded-md w-full text-sm text-white bg-gray-600 dark:bg-red-400 font-semibold">
+                        <button className="w-32 p-1 rounded-md w-full text-sm text-white bg-red-600 dark:bg-red-400 font-semibold">
                             <a href ={`${GOOGLE_OAUTH_URI}/`}>
                                 <i class="fab fa-google pr-2"></i>
                                 Sign in with Google

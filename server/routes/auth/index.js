@@ -19,7 +19,7 @@ router.post('/register', validate, async(req, res) => {
             email
         ])
         if(user.rows.length !== 0){
-            return res.status(401).json("User already exists")
+            return res.status(401).json({success: false, error: "User already exists"})
         } else{
             const saltRound = 10
             const salt = await bcrypt.genSalt(saltRound)
@@ -36,7 +36,7 @@ router.post('/register', validate, async(req, res) => {
         }
     } catch(err){
         console.error(err.message)
-        res.status(500).json({"message": "Server Error"})
+        res.status(500).json({"message": "Server Error", success: false})
     }
 })
 
@@ -49,18 +49,18 @@ router.post('/login', validate, async(req, res) => {
         ])
 
         if(user.rows.length === 0){
-            return res.status(401).json("Password or email is incorrect")
+            return res.status(401).json({success: false, error: "Password or email is incorrect"})
         }
         const validPassword = await bcrypt.compare(password, user.rows[0].user_password)
         if(!validPassword){
-            return res.status(401).json("Password or email is incorrect")
+            return res.status(401).json({success: false, error: "Password or email is incorrect"})
         }
         const token = jwtGenerator(user.rows[0].user_id)
         res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge });
         res.status(201).json({"success": true, message:"User is signed in"})
     } catch(err){
         console.error(err.message)
-        res.status(500).send({message: "Server Error"})
+        res.status(500).send({error: "Server Error", success: false})
     }
 })
 

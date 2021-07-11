@@ -6,21 +6,26 @@ const passport = require('passport')
 
 var app = express()
 
-app.use(cookieParser())
-
 const authRoutes = require('./routes/auth');
 const dbRoutes = require('./routes/db');
 
-const corsOptions ={
-    origin:'http://localhost:3000', 
-    credentials:true,            
-    optionSuccessStatus:200
+const corsDevOptions ={
+    origin: process.env.CLIENT_URI_DEV, 
+    credentials: true,            
+    optionSuccessStatus: 200
+}
+
+const corsProdOptions ={
+    origin: process.env.CLIENT_URI_PROD, 
+    credentials: true,            
+    optionSuccessStatus: 200
 }
 
 // Middleware
-app.use(passport.initialize())
+app.use(process.env.NODE_ENV === 'production' ? cors(corsProdOptions) : cors(corsDevOptions))
+app.use(cookieParser())
 app.use(express.json())
-app.use(process.env.NODE_ENV === 'production' ? cors() : cors(corsOptions))
+app.use(passport.initialize())
 
 app.get('/', passport.authenticate(
     'google', 

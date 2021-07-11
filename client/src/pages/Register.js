@@ -38,10 +38,16 @@ export default function Register(props) {
                 props.history.push('/');
                 window.location.reload()
             }
-        } catch(error){
-            console.error(error.message)
+        } catch (err) {
+            console.error(err.message)
             setLoading(false)
-            setNotif({message: error.response.data, success: false})
+            if(err.response){
+                const {error} = err.response.data
+                setNotif({success: false, message: error})
+            }
+            else{
+                setNotif({success: false, message: 'Error signing up user'})   
+            }
         }
     }
  
@@ -56,7 +62,7 @@ export default function Register(props) {
                         Sign up to browse movies and shows and create a watchlist.
                     </p>
                     <div className="w-full mt-6">
-                        <button className="w-32 p-1 rounded-md w-full text-sm text-white bg-gray-600 dark:bg-red-400 font-semibold">
+                        <button className="w-32 p-1 rounded-md w-full text-sm text-white bg-red-600 dark:bg-red-400 font-semibold">
                            <a href ={`${GOOGLE_OAUTH_URI}`}>
                             <i class="fab fa-google pr-2"></i>
                                 Sign up with Google
