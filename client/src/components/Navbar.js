@@ -1,19 +1,30 @@
 import React, { useContext } from 'react';
 import Search from './Search';
 import { Link } from "react-router-dom"; 
-import { AppContext } from '../context/AppContext';
+import { AppContext, SERVER_URI } from '../context/AppContext';
 import { ThemeContext } from '../context/ThemeContext';
+import axios from 'axios';
 
 export default function Navbar() {
 
-    const { currentUser, isAuthenticated } = useContext(AppContext)
+    const { currentUser, setCurrentUser, isAuthenticated, setIsAuthenticated } = useContext(AppContext)
     const { colorTheme, setTheme } = useContext(ThemeContext)
 
+    const signOut = () => {
+        axios.get(`${SERVER_URI}/auth/logout`, {
+            withCredentials: true
+        }).then(() => {
+            setIsAuthenticated(false)
+            setCurrentUser(null)
+            window.location.reload()
+        })
+    }
+
     return (
-        <div className="fixed top-0 bg-white dark:bg-card-dark dark:text-white shadow px-6 py-4 w-full z-50">
+        <div className="fixed top-0 bg-white dark:bg-card-dark dark:text-white shadow px-6 py-4 w-full z-50 font-heading">
             <div className="hidden md:flex w-100 justify-between items-center">
                         <Link to = '/home'>
-                            <div className="font-bold text-gray-700 dark:text-white tracker-wide font-heading">
+                            <div className="font-bold text-gray-700 dark:text-white tracker-wide">
                                 NETFLIX WATCHLIST
                             </div>
                         </Link>
@@ -35,7 +46,7 @@ export default function Navbar() {
                     && <div className="flex items-end">
                         <div className="flex flex-col text-xs font-medium items-center px-4">
                             Hello, {currentUser.user.user_name}
-                            <div className="font-medium pt-1 hover:underline">
+                            <div className="font-medium pt-1 hover:underline" onClick={() => signOut()}>
                                 LOG OUT
                             </div>
                         </div>

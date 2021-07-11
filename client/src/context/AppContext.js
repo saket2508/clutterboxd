@@ -3,6 +3,8 @@ import axios from 'axios';
 
 export const AppContext = createContext();
 
+export const SERVER_URI = process.env.NODE_ENV==='production' ? process.env.REACT_APP_SERVER_URI_PROD : process.env.REACT_APP_SERVER_URI_DEV
+
 function AppProvider({ children }){
 
     const [ isAuthenticated, setIsAuthenticated ] = useState(null)
@@ -12,9 +14,9 @@ function AppProvider({ children }){
 
     const getAuthStatus =  async() => {
         try{
-            const res = await axios.get("http://localhost:5000/auth", { withCredentials: true })
-            const userRes = res.data
-            return userRes
+            const res = await axios.get(`${SERVER_URI}/auth`, { withCredentials: true })
+            const authRes = res.data
+            return authRes
         } catch(err){
             console.error(err.message)
             return false
@@ -23,7 +25,7 @@ function AppProvider({ children }){
 
     const getUser = async () => {
         try{
-            const res = await axios.get('http://localhost:5000/auth/user', { withCredentials: true })
+            const res = await axios.get(`${SERVER_URI}/auth/user`, { withCredentials: true })
             const user = res.data
             return user 
         } catch(err){
@@ -35,7 +37,7 @@ function AppProvider({ children }){
 
     const getWatchlist = async () => {
         try{
-            const res = await axios.get('http://localhost:5000/db/', { withCredentials: true })
+            const res = await axios.get(`${SERVER_URI}/db`, { withCredentials: true })
             const {watchlist} = res.data
             return watchlist
         } catch(err){
@@ -54,17 +56,17 @@ function AppProvider({ children }){
     }, [])
 
     useEffect(() => {
-        if(isAuthenticated === true){
-            async function getData(){
-                if(isAuthenticated == true){
-                    const user = await getUser()
-                    const watchlist = await getWatchlist()
-                    setCurrentUser(user)
-                    setWatchlist(watchlist)
-                }
+        if(!isAuthenticated) return
+
+        async function getData(){
+            if(isAuthenticated == true){
+                const user = await getUser()
+                const watchlist = await getWatchlist()
+                setCurrentUser(user)
+                setWatchlist(watchlist)
             }
-            getData()
         }
+        getData()
     }, [isAuthenticated])
 
     return(

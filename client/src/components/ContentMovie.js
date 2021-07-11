@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'; 
+import React, { useContext, useEffect, useState, useRef } from 'react'; 
 import styled from 'styled-components';
-import { AppContext } from '../context/AppContext';
+import { AppContext, SERVER_URI } from '../context/AppContext';
 import { ThemeContext } from '../context/ThemeContext';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios';
 
 export default function ContentMovie({movie}) {
 
+    let timerID = useRef(null)
     const { watchlist, setWatchlist } = useContext(AppContext)
     const { colorTheme } = useContext(ThemeContext)
 
@@ -29,10 +28,10 @@ export default function ContentMovie({movie}) {
             })
             genres += movie.genres[movie.genres.length - 1].name
         }
-        if(movie.genres.length == 2){
+        if(movie.genres.length === 2){
             genres = movie.genres[0].name + ', ' + movie.genres[1].name
         }
-        if(movie.genres.length == 1){
+        if(movie.genres.length === 1){
             genres = movie.genres[0].name
         }
         return `${genres}`
@@ -75,7 +74,7 @@ export default function ContentMovie({movie}) {
                         )
                     } else{
                         return(
-                            <div key={i} className="px-1 text-gray-300">
+                            <div key={i} className="px-1 light:text-gray-400 dark:text-gray-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
@@ -161,7 +160,7 @@ export default function ContentMovie({movie}) {
     `
 
     const CoverImageDark = styled.div`
-        background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 68%, rgb(0, 0, 0) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
+        background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
         position: relative;
         min-width: 300px;
         width: 300px;
@@ -174,11 +173,11 @@ export default function ContentMovie({movie}) {
         border:0;
         min-width:100%;
         background-size: cover;
-        background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 68%, rgb(0, 0, 0) 100%), url(https://www.themoviedb.org/t/p/w1000_and_h563_face${movie.backdrop_path});
+        background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://www.themoviedb.org/t/p/w1000_and_h563_face${movie.backdrop_path});
     }
 
     @media(max-width: 600px){
-        background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 68%, rgb(0, 0, 0) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
+        background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
         position: relative;
         min-width: 300px;
         width: 300px;
@@ -190,7 +189,7 @@ export default function ContentMovie({movie}) {
 
     const AddToList = async() => {
         try {
-            const res = await axios.post('http://localhost:5000/db/add/movie', {
+            const res = await axios.post(`${SERVER_URI}/db/add/movie`, {
                 media_type: media_type,
                 id: id,
                 item: {title, poster_img, backdrop_img, genres, overview, cast_and_credits, runtime, tmdb_rating, release_date}
@@ -201,6 +200,10 @@ export default function ContentMovie({movie}) {
             const {newItem, message, success} = res.data
             setWatchlist(watchlist => [...watchlist, newItem])
             setNotif({message, success})
+            // Hide message after 4s
+            timerID = setTimeout(() => {
+                setNotif(null)
+            }, 4000)
         } catch (error) {
             console.error(error.message)
             setNotif({message:'Could not add movie to list', success: false})
@@ -209,42 +212,33 @@ export default function ContentMovie({movie}) {
 
     const RemoveFromList = async() => {
         try {
-            const res = await axios.delete(`http://localhost:5000/db/delete/movie/${id}`, {
+            const res = await axios.delete(`${SERVER_URI}/db/delete/movie/${id}`, {
                 withCredentials: true,
             })
             console.log(res.data)
             const {success, message} = res.data
             setWatchlist(watchlist => watchlist.filter(item => (item.index !== id || item.media_type !== media_type)))
             setNotif({message, success})
+            // Hide message after 4s
+            timerID = setTimeout(() => {
+                setNotif(null)
+            }, 4000)
         } catch (error) {
             console.error(error.message)
             setNotif({message:'Could not remove movie from list', success: false})
         }
     }
 
-    const Notification = ({ open, success, message }) => {
-
-        function Alert(props) {
-            return <MuiAlert elevation={6} variant="filled" {...props} />;
-        }
+    const Notification = ({ message }) => {
 
         return(
-            <Snackbar
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                }}
-                open={open}
-                autoHideDuration={6000}
-                onClose={() => setNotif(null)}
-            >   
-                {success===true ? <Alert onClose={() => setNotif(null)} severity="success">
-                    {message}
-                </Alert> : <Alert onClose={() => setNotif(null)} severity="error">
-                    {message}
-                </Alert>}
-
-            </Snackbar>
+            <div className="fixed bottom-20 mb-10 sm:mb-0 sm:bottom-10 left-0 right-0 flex justify-center w-100">
+                <div className="inline-block bg-white dark:bg-card-dark shadow rounded">
+                        <div className="p-3">
+                            {message}
+                        </div>
+                    </div>
+            </div>
         )
     }
 
@@ -302,7 +296,7 @@ export default function ContentMovie({movie}) {
                     </div>
                 </div>
         </div>
-        {notif && <Notification open={true} message = {notif.message} success={notif.success}/>}
+        {notif && <Notification message = {notif.message}/>}
     </>
     )
 }

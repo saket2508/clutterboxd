@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const GOOGLE_CALLBACK_URI = 'http://localhost:5000/auth/google/callback'
+const GOOGLE_CALLBACK_URI = process.env.NODE_ENV === 'production' ? process.env.GOOGLE_CALLBACK_URI_PROD : process.env.GOOGLE_CALLBACK_URI_DEV
 
 module.exports = {
     clientID: process.env.google_oauth_client_id,

@@ -1,8 +1,7 @@
-import React, { isValidElement, useContext } from "react";
+import React, { useContext } from "react";
 import AppRoutes from './routes/AppRoutes';
 import LoginRoutes from "./routes/LoginRoutes";
-import { AppContext } from "./context/AppContext";
-import { BrowserRouter as Router, Route } from "react-router-dom"; 
+import { AppContext } from "./context/AppContext"; 
 import LoadingSpinner from "./components/LoadingSpinner";
 import Error from "./components/Error";
 

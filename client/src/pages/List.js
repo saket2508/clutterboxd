@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function List() {
 
-    const { watchlist, setWatchlist, currentUser } = useContext(AppContext)
+    const { watchlist, currentUser } = useContext(AppContext)
 
     if(watchlist && watchlist.length === 0){
         return(

@@ -69,7 +69,7 @@ export default function Search() {
                         {options.map((item, index) => {
                             return(
                                 <Link onClick={() => selectOption(item)} to = {`/${item.media_type}/${item.id}`}>
-                                    <div className="p-2 hover:bg-gray-100 drark:hover:bg-gray-700">
+                                    <div className="p-2 hover:bg-gray-100 dark:hover:bg-text-secondary-light">
                                         {item.original_title || item.name || item.original_name} ({getReleaseYear(item)}{getMediaType(item)})
                                     </div>
                                 </Link>
@@ -83,8 +83,8 @@ export default function Search() {
 
     return (
         <>
-        <div className="hidden md:inline-block">
-            <div className="relative mr-2 xl:mr-6">
+        <div className="hidden md:inline-block mr-2 xl:mr-6">
+            <div className="relative">
                     <div className="absolute left-2 top-2">
                         <div className="inline-block text-gray-600 dark:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

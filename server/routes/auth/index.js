@@ -1,3 +1,4 @@
+require('dotenv').config()
 const router = require('express').Router()
 const pool = require('../../database/config')
 const bcrypt = require('bcrypt')
@@ -8,8 +9,8 @@ const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const googleStrategy = require('../../oauth2/googleStrategy')
 
-const maxAge = 3600*1000
-const APP_REDIRECT_URI = 'http://localhost:3000'
+const maxAge = 7*24*3600*1000
+const APP_REDIRECT_URI = process.env.NODE_ENV === 'production' ? process.env.CLIENT_URI_PROD : process.env.CLIENT_URI_DEV
 
 router.post('/register', validate, async(req, res) => {
     try{
@@ -65,7 +66,7 @@ router.post('/login', validate, async(req, res) => {
 
 router.get('/logout', async(req, res) => {
   res.cookie('jwt', '', { maxAge: 1 })
-  res.status(201).json("user signed out")
+  res.status(201).json("uUer signed out")
 })
 
 router.get("/user", authorize, async (req, res) => {

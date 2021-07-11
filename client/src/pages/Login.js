@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { Link } from "react-router-dom"; 
 import axios from 'axios';
-import { AppContext } from '../context/AppContext';
+import { AppContext, SERVER_URI } from '../context/AppContext';
 
-const GOOGLE_OAUTH_URI = 'http://localhost:5000/'
+const GOOGLE_OAUTH_URI = SERVER_URI
 
 export default function Login(props) {
     const { setIsAuthenticated } = useContext(AppContext)
@@ -17,7 +17,7 @@ export default function Login(props) {
         e.preventDefault()
         setLoading(true)
         try {
-            const res = await axios.post('http://localhost:5000/auth/login', {
+            const res = await axios.post(`${SERVER_URI}/auth/login`, {
                 email: email,
                 password: password,
             }, {
@@ -53,7 +53,7 @@ export default function Login(props) {
                     </p>
                     <div className="w-full mt-6">
                         <button className="w-32 p-1 rounded-md w-full text-sm text-white bg-gray-600 dark:bg-red-400 font-semibold">
-                            <a href ={`${GOOGLE_OAUTH_URI}`}>
+                            <a href ={`${GOOGLE_OAUTH_URI}/`}>
                                 <i class="fab fa-google pr-2"></i>
                                 Sign in with Google
                             </a>
