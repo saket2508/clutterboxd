@@ -60,7 +60,7 @@ router.post('/login', validate, async(req, res) => {
         res.status(201).json({"success": true, message:"User is signed in"})
     } catch(err){
         console.error(err.message)
-        res.status(500).send({error: "Server Error", success: false})
+        res.status(500).json({error: "Server Error", success: false})
     }
 })
 
