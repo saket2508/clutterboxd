@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Search from './Search';
 import { Link } from "react-router-dom"; 
-import { AppContext, SERVER_URI } from '../context/AppContext';
+import { AppContext } from '../context/AppContext';
 import { ThemeContext } from '../context/ThemeContext';
 import axios from 'axios';
 
@@ -11,7 +11,7 @@ export default function Navbar() {
     const { colorTheme, setTheme } = useContext(ThemeContext)
 
     const signOut = () => {
-        axios.get(`${SERVER_URI}/auth/logout`, {
+        axios.get(`/auth/logout`, {
             withCredentials: true
         }).then(() => {
             setIsAuthenticated(false)

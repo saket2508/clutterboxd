@@ -3,8 +3,6 @@ import axios from 'axios';
 
 export const AppContext = createContext();
 
-export const SERVER_URI = process.env.NODE_ENV==='production' ? process.env.REACT_APP_SERVER_URI_PROD : process.env.REACT_APP_SERVER_URI_DEV
-
 function AppProvider({ children }){
 
     const [ isAuthenticated, setIsAuthenticated ] = useState(null)
@@ -14,7 +12,7 @@ function AppProvider({ children }){
 
     const getAuthStatus =  async() => {
         try{
-            const res = await axios.get(`${SERVER_URI}/auth`, { withCredentials: true })
+            const res = await axios.get(`/auth`, { withCredentials: true })
             const authRes = res.data
             return authRes
         } catch(err){
@@ -25,7 +23,7 @@ function AppProvider({ children }){
 
     const getUser = async () => {
         try{
-            const res = await axios.get(`${SERVER_URI}/auth/user`, { withCredentials: true })
+            const res = await axios.get(`/auth/user`, { withCredentials: true })
             const user = res.data
             return user 
         } catch(err){
@@ -37,7 +35,7 @@ function AppProvider({ children }){
 
     const getWatchlist = async () => {
         try{
-            const res = await axios.get(`${SERVER_URI}/db`, { withCredentials: true })
+            const res = await axios.get(`/db`, { withCredentials: true })
             const {watchlist} = res.data
             return watchlist
         } catch(err){

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'; 
 import styled from 'styled-components';
-import { AppContext, SERVER_URI } from '../context/AppContext';
+import { AppContext } from '../context/AppContext';
 import { ThemeContext } from '../context/ThemeContext';
 import axios from 'axios';
 
@@ -189,7 +189,7 @@ export default function ContentMovie({movie}) {
 
     const AddToList = async() => {
         try {
-            const res = await axios.post(`${SERVER_URI}/db/add/movie`, {
+            const res = await axios.post(`/db/add/movie`, {
                 media_type: media_type,
                 id: id,
                 item: {title, poster_img, backdrop_img, genres, overview, cast_and_credits, runtime, tmdb_rating, release_date}
@@ -211,7 +211,7 @@ export default function ContentMovie({movie}) {
 
     const RemoveFromList = async() => {
         try {
-            const res = await axios.delete(`${SERVER_URI}/db/delete/movie/${id}`, {
+            const res = await axios.delete(`/db/delete/movie/${id}`, {
                 withCredentials: true,
             })
             const {success, message} = res.data

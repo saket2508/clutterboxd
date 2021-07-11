@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'; 
 import styled from 'styled-components';
-import { AppContext, SERVER_URI } from '../context/AppContext';
+import { AppContext } from '../context/AppContext';
 import { ThemeContext } from '../context/ThemeContext';
 import axios from 'axios';
 
@@ -177,7 +177,7 @@ export default function ContentShow({show}) {
 
     const AddToList = async() => {
         try {
-            const res = await axios.post(`${SERVER_URI}/db/add/tv`, {
+            const res = await axios.post(`/db/add/tv`, {
                 media_type: media_type,
                 id: id,
                 item: {title, poster_img, backdrop_img, genres, overview, cast_and_credits, number_of_seasons, tmdb_rating, release_date}
@@ -199,7 +199,7 @@ export default function ContentShow({show}) {
 
     const RemoveFromList = async() => {
         try {
-            const res = await axios.delete(`${SERVER_URI}/db/delete/tv/${id}`, {
+            const res = await axios.delete(`/db/delete/tv/${id}`, {
                 withCredentials: true,
 
             })
