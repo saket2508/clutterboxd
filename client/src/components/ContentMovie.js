@@ -125,7 +125,7 @@ export default function ContentMovie({movie}) {
     const release_date = movie.release_date
 
     const CoverImageLight = styled.div`
-            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 68%, rgb(255, 255, 255) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
+            background-image: linear-gradient(180deg, rgba(244, 244, 245, 0) 68%, rgb(244, 244, 245) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
             position: relative;
             min-width: 300px;
             width: 300px;
@@ -137,12 +137,12 @@ export default function ContentMovie({movie}) {
             position:relative;
             min-width:100%;
             background-size: cover;
-            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 68%, rgb(255, 255, 255) 100%), url(https://www.themoviedb.org/t/p/w1000_and_h563_face${movie.backdrop_path});
+            background-image: linear-gradient(180deg, rgba(244, 244, 245, 0) 68%, rgb(244, 244, 245) 100%), url(https://www.themoviedb.org/t/p/w1000_and_h563_face${movie.backdrop_path});
             border:0;
         }
 
         @media(max-width: 600px){
-            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 68%, rgb(255, 255, 255) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
+            background-image: linear-gradient(180deg, rgba(244, 244, 245, 0) 68%, rgb(244, 244, 245) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
             position: relative;
             min-width: 300px;
             width: 300px;
@@ -267,7 +267,7 @@ export default function ContentMovie({movie}) {
                                 </div>
                             </div>
                             {movieInList===true ? <button onClick={() => RemoveFromList()} className="bg-white dark:bg-card-dark text-red-600 dark:text-red-400 shadow-xl rounded-full p-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                                     <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                             </svg>
                             </button> : <button onClick={() => AddToList()} className="bg-white dark:bg-card-dark text-black dark:text-white shadow-xl rounded-full p-2">

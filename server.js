@@ -16,10 +16,6 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(passport.initialize())
 
-app.get('/', (req, res) => {
-    res.send('Server is running')
-})
-
 app.get('/oauth', passport.authenticate(
     'google', 
     {scope: [ 'email', 'profile' ]}
