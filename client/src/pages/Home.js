@@ -28,7 +28,7 @@ export default function Home() {
             } catch(err){
                 setLoading(false)
                 setErr(true)
-                console.error(err)
+                console.error(err.message)
             }
         }
         getData()

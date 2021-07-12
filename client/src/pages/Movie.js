@@ -25,7 +25,7 @@ export default function Movie({match}) {
                     setMovieInfo(fullMovieData)
                 }
                 catch(err){
-                    console.error(err)
+                    console.error(err.message)
                 }
             }
         }
