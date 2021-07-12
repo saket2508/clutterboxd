@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from "react-router-dom"; 
 import { AppContext } from '../context/AppContext';
 
-const GOOGLE_OAUTH_URI = 'http://localhost:5000/oauth'
+const GOOGLE_OAUTH_URI = process.env.NODE_ENV === "production"? 'https://netflixwatchlist.herokuapp.com/oauth' : 'http://localhost:5000/oauth'
 
 export default function Register(props) {
     const { setIsAuthenticated } = useContext(AppContext)
