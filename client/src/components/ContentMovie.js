@@ -93,6 +93,7 @@ export default function ContentMovie({movie}) {
     }
 
     const getCast = movie => {
+        if(!movie || movie.cast.length === 0) return
         let first_six = ''
 
         let castMembers = movie.cast.slice(0, 6)
@@ -160,31 +161,31 @@ export default function ContentMovie({movie}) {
     `
 
     const CoverImageDark = styled.div`
-        background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
-        position: relative;
-        min-width: 300px;
-        width: 300px;
-        height: 450px;
-        background-size: cover;
-        border:0;
+            background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
+            position: relative;
+            min-width: 300px;
+            width: 300px;
+            height: 450px;
+            background-size: cover;
+            border:0;
 
-    @media(max-width: 1200px){
-        position:relative;
-        border:0;
-        min-width:100%;
-        background-size: cover;
-        background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://www.themoviedb.org/t/p/w1000_and_h563_face${movie.backdrop_path});
-    }
+        @media(max-width: 1200px){
+            position:relative;
+            border:0;
+            min-width:100%;
+            background-size: cover;
+            background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://www.themoviedb.org/t/p/w1000_and_h563_face${movie.backdrop_path});
+        }
 
-    @media(max-width: 600px){
-        background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
-        position: relative;
-        min-width: 300px;
-        width: 300px;
-        height: 450px;
-        background-size: cover;
-        border:0;
-    }
+        @media(max-width: 600px){
+            background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
+            position: relative;
+            min-width: 300px;
+            width: 300px;
+            height: 450px;
+            background-size: cover;
+            border:0;
+        }
     `
 
     const AddToList = async() => {
@@ -227,16 +228,27 @@ export default function ContentMovie({movie}) {
         }
     }
 
-    const Notification = ({ message }) => {
+    const Notification = ({ message, success }) => {
 
+        if(success === true){
+            return(
+                <div className="fixed bottom-20 mb-10 sm:mb-0 sm:bottom-10 left-0 right-0 flex justify-center w-100">
+                    <div className="inline-block bg-green-100 text-green-600 dark:bg-green-600 dark:text-white shadow rounded">
+                            <div className="p-3">
+                                {message}
+                            </div>
+                        </div>
+                </div>
+            )
+        }
         return(
             <div className="fixed bottom-20 mb-10 sm:mb-0 sm:bottom-10 left-0 right-0 flex justify-center w-100">
-                <div className="inline-block bg-white dark:bg-card-dark shadow rounded">
-                        <div className="p-3">
-                            {message}
+                    <div className="inline-block bg-red-100 text-red-600 dark:bg-red-600 dark:text-white shadow rounded">
+                            <div className="p-3">
+                                {message}
+                            </div>
                         </div>
-                    </div>
-            </div>
+                </div>
         )
     }
 
@@ -244,7 +256,7 @@ export default function ContentMovie({movie}) {
     return (
         <>
         <div className="w-full relative">
-            <div className="flex flex-col xl:flex-row items-center xl:items-start xl:px-20 p-6">
+            <div className="flex flex-col xl:flex-row items-center xl:items-start xl:px-20 p-6 w-100">
             {colorTheme === 'light' ? <CoverImageDark/> : <CoverImageLight/>}
                     <div className="mt-8 xl:ml-8 flex flex-col">
                         <div className="flex justify-between w-100 items-center">
@@ -256,7 +268,7 @@ export default function ContentMovie({movie}) {
                                     {getReleaseYear(movie)}
                                 </div>
                             </div>
-                            {movieInList===true ? <button onClick={() => RemoveFromList()} className="bg-white dark:bg-card-dark light:text-red-600 dark:text-red-400 shadow-xl rounded-full p-2">
+                            {movieInList===true ? <button onClick={() => RemoveFromList()} className="bg-white dark:bg-card-dark text-red-600 dark:text-red-400 shadow-xl rounded-full p-2">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                             </svg>
@@ -275,26 +287,26 @@ export default function ContentMovie({movie}) {
                                 {getRuntime(movie)}
                             </li>
                         </ul>
-                        <div className="mt-6">
+                        {movie.overview ? <div className="mt-6">
                             <div className="text-xl font-heading">
                                 Overview
                             </div>
                             <p className="mt-3 leading-relaxed font-light">
                                 {getOverview(movie)}
                             </p>
-                        </div>
-                        <div className="mt-6">
+                        </div> : <div></div>}
+                        {movie.cast && movie.cast.length !== 0 ? <div className="mt-6">
                             <div className="text-xl font-heading">
                                 Cast
                             </div>
                             <div className="flex flex-wrap mt-3 font-light">
                                 {getCast(movie)}
                             </div>
-                        </div>
+                        </div> : <div></div>}
                     </div>
                 </div>
         </div>
-        {notif && <Notification message = {notif.message}/>}
+        {notif && <Notification message = {notif.message} success={notif.success}/>}
     </>
     )
 }

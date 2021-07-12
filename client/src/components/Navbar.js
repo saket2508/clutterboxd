@@ -16,7 +16,6 @@ export default function Navbar() {
         }).then(() => {
             setIsAuthenticated(false)
             setCurrentUser(null)
-            window.location.reload()
         })
     }
 

@@ -19,7 +19,7 @@ export default function List() {
                             Your watchlist is currently empty :( You can explore movies and shows trending in your region by going back to Home. You can also search for a particular movie or show by typing its name in the search bar.
                         </p>
                     </div>
-                    <div className="hidden sm:block">
+                    <div className="block">
                         <Link to="/home">
                             <div className='mt-4 inline-flex items-center text-xm font-medium text-indigo-500'>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

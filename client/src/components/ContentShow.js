@@ -84,6 +84,7 @@ export default function ContentShow({show}) {
     }
 
     const getCast = show => {
+        if(!show || show.cast.length === 0) return
         let cast = ''
         let topMembers = show.cast.slice(0, 6) || show.cast
         topMembers.slice(0, -1).map((actor) => {
@@ -217,23 +218,34 @@ export default function ContentShow({show}) {
     }
 
 
-    const Notification = ({ message }) => {
+    const Notification = ({ message, success }) => {
 
-        return(
-            <div className="fixed bottom-20 mb-10 sm:bottom-10 sm:mb-0 left-0 right-0 flex justify-center w-100">
-                <div className="inline-block bg-white dark:bg-card-dark shadow rounded">
-                    <div className="p-3">
-                        {message}
-                    </div>
+        if(success === true){
+            return(
+                <div className="fixed bottom-20 mb-10 sm:mb-0 sm:bottom-10 left-0 right-0 flex justify-center w-100">
+                    <div className="inline-block bg-green-100 text-green-600 dark:bg-green-600 dark:text-white shadow rounded">
+                            <div className="p-3">
+                                {message}
+                            </div>
+                        </div>
                 </div>
-            </div>
+            )
+        }
+        return(
+            <div className="fixed bottom-20 mb-10 sm:mb-0 sm:bottom-10 left-0 right-0 flex justify-center w-100">
+                    <div className="inline-block bg-red-100 text-red-600 dark:bg-red-600 dark:text-white shadow rounded">
+                            <div className="p-3">
+                                {message}
+                            </div>
+                        </div>
+                </div>
         )
     }
 
     return (
         <>
         <div className="relative w-full h-full">
-            <div className="flex flex-col xl:flex-row items-center xl:items-start xl:px-20 p-6">
+            <div className="flex flex-col xl:flex-row items-center xl:items-start xl:px-20 p-6 w-100">
                     {colorTheme === 'light' ? <CoverImageDark/> : <CoverImageLight/>}
                     <div className="mt-8 xl:ml-8 flex flex-col">
                         <div className="flex justify-between w-100 items-center">
@@ -245,7 +257,7 @@ export default function ContentShow({show}) {
                                     {getReleaseYear(show)}
                                 </div>
                             </div>
-                            {showInList===true ? <button onClick={() => RemoveFromList()} className="bg-white dark:bg-card-dark light:text-red-600 dark:text-red-400 shadow-xl rounded-full p-2">
+                            {showInList===true ? <button onClick={() => RemoveFromList()} className="bg-white dark:bg-card-dark text-red-600 dark:text-red-400 shadow-xl rounded-full p-2">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                             </svg>
@@ -264,27 +276,27 @@ export default function ContentShow({show}) {
                                 {getNumberOfSeasone(show)}
                             </li>
                         </ul>
-                        <div className="mt-6">
+                        {show.overview ? <div className="mt-6">
                             <div className="text-xl font-heading">
                                 Overview
                             </div>
                             <p className="mt-3 leading-relaxed font-light">
                                 {getOverview(show)}
                             </p>
-                        </div>
-                        <div className="mt-6">
+                        </div> : <div></div>}
+                        {show.cast && show.cast.length !== 0 ? <div className="mt-6">
                             <div className="text-xl font-heading">
                                 Cast
                             </div>
                             <div className="flex flex-wrap mt-3 font-light">
                                 {getCast(show)}
                             </div>
-                        </div>
+                        </div> : <div></div>}
                     </div>
                 </div>
         </div> 
 
-        {notif && <Notification message = {notif.message}/>} 
+        {notif && <Notification message = {notif.message} success={notif.success}/>} 
     </>
     )
 }
