@@ -48,7 +48,7 @@ export default function List() {
                         return(
                             <div className="flex flex-col items-center poster p-2" key={idx}>
                                 <Link to = {`/${movie.media_type}/${movie.index}`}>
-                                    <img className="poster-img" src={`https://image.tmdb.org/t/p/w500${movie.poster_img}`}/>
+                                    <img alt='Img thumbnail' className="poster-img" src={`https://image.tmdb.org/t/p/w500${movie.poster_img}`}/>
                                 </Link>
                                 <div className="pt-2 text-sm font-light text-center px-2">
                                     {movie.title}

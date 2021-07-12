@@ -47,7 +47,7 @@ export default function Home() {
         return(
         <div className="relative z-10 w-full">
             <div className="flex justify-center items-center mt-20 pt-20">
-                <p className="text-lg text-gray-700 dark:text-white font-bold tracker-wide">
+                <p className="text-lg text-red-600 dark:text-red-400 font-bold tracker-wide">
                     Could not get data from the API :(
                 </p>
             </div>
@@ -70,7 +70,7 @@ export default function Home() {
                         return(
                             <div className="flex flex-col items-center poster p-2" key={idx}>
                                 <Link to = {`/${movie.media_type}/${movie.id}`}>
-                                    <img className="poster-img" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                                    <img alt='Movie thumbnail' className="poster-img" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
                                 </Link>
                                 <div className="pt-2 text-sm font-light text-center px-2">
                                     {movie.title || movie.original_title || movie.original_name}
@@ -91,7 +91,7 @@ export default function Home() {
                         return(
                             <div className="flex flex-col items-center poster p-2" key={idx}>
                                 <Link to = {`/${show.media_type}/${show.id}`}>
-                                    <img className="poster-img" src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}/>
+                                    <img alt='Show thumbnail' className="poster-img" src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}/>
                                 </Link>
                                 <div className="pt-2 text-sm font-light text-center px-2">
                                     {show.title || show.original_title || show.original_name}

@@ -57,7 +57,7 @@ function AppProvider({ children }){
         if(!isAuthenticated) return
 
         async function getData(){
-            if(isAuthenticated == true){
+            if(isAuthenticated === true){
                 const user = await getUser()
                 const watchlist = await getWatchlist()
                 setCurrentUser(user)

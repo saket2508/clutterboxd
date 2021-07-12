@@ -58,10 +58,10 @@ export default function Login(props) {
                         Sign in to add movies and shows to your watchlist
                     </p>
                     <div className="w-full mt-6">
-                        <button className="w-32 p-1 rounded-md w-full text-sm text-white bg-gray-600 dark:bg-red-400 font-semibold">
+                        <button className="w-32 p-1 rounded-full w-full text-sm text-white bg-red-600 dark:bg-red-400 font-semibold">
                             <a href ={`${GOOGLE_OAUTH_URI}/`}>
                                 <i class="fab fa-google pr-2"></i>
-                                Sign in with Google
+                                Continue with Google
                             </a>
                         </button>
                         <small>
@@ -71,21 +71,21 @@ export default function Login(props) {
                     <form className="w-full flex flex-col w-full" onSubmit={e => submitData(e)}>
                        <div className="mb-2 flex-grow-1">
                             <div className="mt-1">
-                                <input type="email" name="email" className="textfield focus:outline-none rounded-full bg-white border border-gray-300 dark:border-transparent dark:bg-search-dark dark:text-white" placeholder="Email" required onChange={e => setEmail(e.target.value)}/>
+                                <input type="email" name="email" className="textfield focus:outline-none bg-white border border-gray-300 dark:border-transparent dark:bg-search-dark dark:text-white" placeholder="Email" required onChange={e => setEmail(e.target.value)}/>
                             </div>
                        </div>
                        <div className="mb-2 flex-grow-1">
                             <div className="mt-1">
-                                <input type="password" name="password" className="textfield focus:outline-none rounded-full bg-white border border-gray-300 dark:border-transparent dark:bg-search-dark dark:text-white" placeholder="Password" required onChange={e => setPassword(e.target.value)}/>
+                                <input type="password" name="password" className="textfield focus:outline-none bg-white border border-gray-300 dark:border-transparent dark:bg-search-dark dark:text-white" placeholder="Password" required onChange={e => setPassword(e.target.value)}/>
                             </div>
                             {notif && <div className="mt-2">
                                 {notif.success===true ? <div className="text-green-400 font-bold text-xs">{notif.message}</div> : <div className="text-red-400 font-bold text-xs">{notif.message}</div>}
                             </div>}
                        </div>
                        <div className="my-3 flex-grow-1">
-                            {loading===false ? <button type="submit" className="w-32 bg-indigo-500 text-sm sm:text-base text-white p-1 rounded w-full font-semibold">
+                            {loading===false ? <button type="submit" className="w-32 bg-indigo-500 text-sm sm:text-base text-white p-1 rounded-full w-full font-semibold">
                                Sign in 
-                            </button> : <button type="submit" className="w-32 bg-indigo-300 text-sm sm:text-base text-white p-1 rounded w-full font-semibold" disabled>
+                            </button> : <button type="submit" className="w-32 bg-indigo-300 text-sm sm:text-base text-white p-1 rounded-full w-full font-semibold" disabled>
                                Loading... 
                             </button>}
                        </div>

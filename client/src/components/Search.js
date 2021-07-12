@@ -26,7 +26,7 @@ export default function Search() {
                 return
             })
         return () => (cancel = true)
-    }, [search])
+    }, [search, selected])
 
     const getTitle = movie => {
         let title = movie.original_title || movie.name || movie.original_name

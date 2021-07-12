@@ -9,6 +9,20 @@ export default function ContentShow({show}) {
     let timerID = useRef(null)
     const { watchlist, setWatchlist } = useContext(AppContext)
     const { colorTheme } = useContext(ThemeContext)
+    const media_type = 'tv'
+    const id = show.id
+    const checkIfShowIsInDb = () =>{
+        return watchlist && watchlist.find(item => (item.index === id && item.media_type === media_type)) ? true : false
+    }
+
+    const [showInList, setShowInList] = useState(checkIfShowIsInDb)
+
+    const [ notif, setNotif ] = useState()
+
+    useEffect(() => {
+        let res = checkIfShowIsInDb()
+        setShowInList(res)
+    }, [watchlist, show])
 
 
     const getShowTitle = show => {
@@ -24,15 +38,13 @@ export default function ContentShow({show}) {
     const getGenres = show => {
         let genres = ''
         if (show.genres.length >= 3){
-            show.genres.slice(0, -1).map((genre, id) => {
-                genres += genre.name + ', '
-            })
+            show.genres.slice(0, -1).map((genre) => genres += genre.name + ', ')
             genres += show.genres[show.genres.length - 1].name
         }
-        if(show.genres.length == 2){
+        if(show.genres.length === 2){
             genres = show.genres[0].name + ', ' + show.genres[1].name
         }
-        if(show.genres.length == 1){
+        if(show.genres.length === 1){
             genres = show.genres[0].name
         }
         return `${genres}`
@@ -87,16 +99,11 @@ export default function ContentShow({show}) {
         if(!show || show.cast.length === 0) return
         let cast = ''
         let topMembers = show.cast.slice(0, 6) || show.cast
-        topMembers.slice(0, -1).map((actor) => {
-            cast += actor.name + ',' + ' '
-        })
+        topMembers.slice(0, -1).map((actor) => cast += actor.name + ',' + ' ')
         cast += topMembers[topMembers.length - 1].name
         return `${cast}`
     }
     
-
-    const media_type = 'tv'
-    const id = show.id
     const title = getShowTitle(show)
     const poster_img = `https://image.tmdb.org/t/p/w500${show.poster_path}`
     const backdrop_img = `https://www.themoviedb.org/t/p/w1000_and_h563_face${show.backdrop_path}`
@@ -106,19 +113,6 @@ export default function ContentShow({show}) {
     const number_of_seasons = show.number_of_seasons
     const tmdb_rating = show.vote_average
     const release_date = show.first_air_date
-
-    const checkIfShowIsInDb = () =>{
-        return watchlist && watchlist.find(item => (item.index === id && item.media_type === media_type)) ? true : false
-    }
-
-
-    const [showInList, setShowInList] = useState(checkIfShowIsInDb)
-    const [ notif, setNotif ] = useState()
-
-    useEffect(() => {
-        let res = checkIfShowIsInDb()
-        setShowInList(res)
-    }, [watchlist])
 
     const CoverImageLight = styled.div`
         background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 68%, rgb(255, 255, 255) 100%), url(https://image.tmdb.org/t/p/w500${show.poster_path});
@@ -177,6 +171,8 @@ export default function ContentShow({show}) {
     `
 
     const AddToList = async() => {
+        // will set button icon to 'liked' ie filled heart
+        setShowInList(true)
         try {
             const res = await axios.post(`/db/add/tv`, {
                 media_type: media_type,
@@ -193,12 +189,15 @@ export default function ContentShow({show}) {
                 setNotif(null)
             }, 4000)
         } catch (error) {
+            setShowInList(false)
             console.error(error.message)
             setNotif({message:'Could not add show to list', success: false})
         }
     }
 
     const RemoveFromList = async() => {
+        // will set button icon to 'unliked' ie empty heart
+        setShowInList(false)
         try {
             const res = await axios.delete(`/db/delete/tv/${id}`, {
                 withCredentials: true,
@@ -212,6 +211,7 @@ export default function ContentShow({show}) {
                 setNotif(null)
             }, 4000)
         } catch (error) {
+            setShowInList(true)
             console.error(error.message)
             setNotif({message:'Could not remove show from list', success: false})
         }
@@ -219,7 +219,6 @@ export default function ContentShow({show}) {
 
 
     const Notification = ({ message, success }) => {
-
         if(success === true){
             return(
                 <div className="fixed bottom-20 mb-10 sm:mb-0 sm:bottom-10 left-0 right-0 flex justify-center w-100">
@@ -295,7 +294,6 @@ export default function ContentShow({show}) {
                     </div>
                 </div>
         </div> 
-
         {notif && <Notification message = {notif.message} success={notif.success}/>} 
     </>
     )

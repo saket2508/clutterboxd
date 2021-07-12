@@ -9,6 +9,20 @@ export default function ContentMovie({movie}) {
     let timerID = useRef(null)
     const { watchlist, setWatchlist } = useContext(AppContext)
     const { colorTheme } = useContext(ThemeContext)
+    const media_type = 'movie'
+    const id = movie.id
+    const checkIfMovieIsInDb = () => {
+        return watchlist && watchlist.find(item => (item.index === id && item.media_type === media_type)) ? true : false
+    }
+
+    const [movieInList, setMovieInList] = useState(checkIfMovieIsInDb)
+
+    const [ notif, setNotif ] = useState()
+
+    useEffect(() => {
+        let res = checkIfMovieIsInDb()
+        setMovieInList(res)
+    }, [watchlist, movie])
 
     const getMovieTitle = movie => {
         let title =  movie.title || movie.original_title || movie.original_name
@@ -23,9 +37,7 @@ export default function ContentMovie({movie}) {
     const getGenres = movie => {
         let genres = ''
         if (movie.genres.length >= 3){
-            movie.genres.slice(0, -1).map((genre, id) => {
-                genres += genre.name + ', '
-            })
+            movie.genres.slice(0, -1).map((genre) => genres += genre.name + ', ')
             genres += movie.genres[movie.genres.length - 1].name
         }
         if(movie.genres.length === 2){
@@ -43,7 +55,7 @@ export default function ContentMovie({movie}) {
         let m = runtime_mins%60
 
         if(h >= 1){
-            if(m != 0){
+            if(m !== 0){
                 return String(h)+'h'+' '+String(m)+' '+'m'
             }
             else{
@@ -97,15 +109,11 @@ export default function ContentMovie({movie}) {
         let first_six = ''
 
         let castMembers = movie.cast.slice(0, 6)
-        castMembers.slice(0, 5).map((actor) => {
-            first_six += actor.name + ', '
-        })
+        castMembers.slice(0, 5).map((actor) => first_six += actor.name + ', ')
         first_six += castMembers[5].name
         return `${first_six}`
     }
 
-    const media_type = 'movie'
-    const id = movie.id
     const title = getMovieTitle(movie)
     const poster_img = `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     const backdrop_img = `https://www.themoviedb.org/t/p/w1000_and_h563_face${movie.backdrop_path}`
@@ -115,22 +123,6 @@ export default function ContentMovie({movie}) {
     const runtime = movie.runtime
     const tmdb_rating = movie.vote_average
     const release_date = movie.release_date
-
-
-    const checkIfMovieIsInDb = () => {
-        return watchlist && watchlist.find(item => (item.index === id && item.media_type === media_type)) ? true : false
-    }
-
-    const [movieInList, setMovieInList] = useState(checkIfMovieIsInDb)
-
-    const [ notif, setNotif ] = useState()
-
-    useEffect(() => {
-        let res = checkIfMovieIsInDb()
-        setMovieInList(res)
-    }, [watchlist])
-  
-    
 
     const CoverImageLight = styled.div`
             background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 68%, rgb(255, 255, 255) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
@@ -189,6 +181,8 @@ export default function ContentMovie({movie}) {
     `
 
     const AddToList = async() => {
+        // will set button icon to 'liked' ie filled heart
+        setMovieInList(true)
         try {
             const res = await axios.post(`/db/add/movie`, {
                 media_type: media_type,
@@ -205,12 +199,15 @@ export default function ContentMovie({movie}) {
                 setNotif(null)
             }, 4000)
         } catch (error) {
+            setMovieInList(false)
             console.error(error.message)
             setNotif({message:'Could not add movie to list', success: false})
         }
     }
 
     const RemoveFromList = async() => {
+        // will set button icon to 'unliked' ie empty heart
+        setMovieInList(false)
         try {
             const res = await axios.delete(`/db/delete/movie/${id}`, {
                 withCredentials: true,
@@ -223,6 +220,7 @@ export default function ContentMovie({movie}) {
                 setNotif(null)
             }, 4000)
         } catch (error) {
+            setMovieInList(true)
             console.error(error.message)
             setNotif({message:'Could not remove movie from list', success: false})
         }
