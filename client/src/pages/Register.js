@@ -78,7 +78,7 @@ export default function Register(props) {
                                 <input type="text" name="name" className="textfield focus:outline-none bg-white border border-gray-300 dark:border-transparent dark:bg-search-dark dark:text-white" placeholder="Full Name" required onChange={e => setName(e.target.value)}/>
                             </div>
                        </div>
-                       <div className="mb-4 flex-grow-1">
+                       <div className="mb-2 flex-grow-1">
                             <div className="mt-1">
                                 <input type="email" name="email" className="textfield focus:outline-none bg-white border border-gray-300 dark:border-transparent dark:bg-search-dark dark:text-white" placeholder="Email" required onChange={e => setEmail(e.target.value)}/>
                             </div>

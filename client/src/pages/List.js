@@ -12,7 +12,7 @@ export default function List() {
             <div className="relative z-10 w-full">
                 <div className="w-full p-6">
                     <div className="text-2xl xl:text-3xl pb-4 tracker-wide font-heading">
-                        {`Hello, ${currentUser.user.user_name}`}
+                        {`Hello, ${currentUser.user_name}`}
                     </div>
                     <div className="mt-2">
                         <p className="leading-relaxed font-light text-xl">

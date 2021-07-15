@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
 module.exports = async (req, res, next) => {
-    const token = req.cookies.jwt
+    const token = req.cookies.netflix_watchlist_jwt
     if(!token){
-        return res.status(403).json({message: "Authorization denied"})
+        return res.status(403).json({error: "Authorization denied"})
     }
     try{
         const verify = jwt.verify(token, process.env.jwtSecret)
@@ -12,6 +12,6 @@ module.exports = async (req, res, next) => {
         next()
     } catch(err){
         console.error(err.message)
-        res.status(401).json({message: "Token invalid"})
+        res.status(401).json({error: "Token invalid"})
     }
 }

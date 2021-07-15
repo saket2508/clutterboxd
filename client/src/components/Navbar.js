@@ -44,7 +44,7 @@ export default function Navbar() {
                     {currentUser 
                     && <div className="flex items-end">
                         <div className="flex flex-col text-xs font-medium items-center px-4">
-                            Hello, {currentUser.user.user_name}
+                            Hello, {currentUser.user_name}
                             <div className="font-medium pt-1 hover:underline" onClick={() => signOut()}>
                                 LOG OUT
                             </div>

@@ -1,7 +1,8 @@
 const config = require('./config')
 const passport = require('passport')
-const GoogleStrategy = require('passport-google-oauth20').Strategy
+const GoogleStrategy = require('passport-google-oauth2').Strategy
 const pool = require('../database/config')
+
 
 passport.use(new GoogleStrategy({
         clientID: config.clientID,

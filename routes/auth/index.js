@@ -7,10 +7,11 @@ const authorize = require('../../middleware/authorize')
 const validate = require('../../middleware/validation')
 const passport = require('passport')
 const cookieParser = require('cookie-parser')
-const googleStrategy = require('../../oauth2/googleStrategy')
+require('../../oauth2/googleStrategy')
 
 const maxAge = 7*24*3600*1000
 const APP_REDIRECT_URI = process.env.NODE_ENV === 'production' ? process.env.CLIENT_URI_PROD : process.env.CLIENT_URI_DEV
+
 
 router.post('/register', validate, async(req, res) => {
     try{
@@ -30,13 +31,13 @@ router.post('/register', validate, async(req, res) => {
             const token = jwtGenerator(newUser.rows[0].user_id)
 
             // store jwt in httpOnly cookie
-            res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge })
+            res.cookie('netflix_watchlist_jwt', token, { httpOnly: true, maxAge: maxAge })
 
             res.status(201).json({success: true, message:"User is registered"})
         }
     } catch(err){
         console.error(err.message)
-        res.status(500).json({"message": "Server Error", success: false})
+        res.status(500).json({error: "Server Error", success: false})
     }
 })
 
@@ -56,7 +57,7 @@ router.post('/login', validate, async(req, res) => {
             return res.status(401).json({success: false, error: "Password or email is incorrect"})
         }
         const token = jwtGenerator(user.rows[0].user_id)
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge });
+        res.cookie('netflix_watchlist_jwt', token, { httpOnly: true, maxAge: maxAge });
         res.status(201).json({"success": true, message:"User is signed in"})
     } catch(err){
         console.error(err.message)
@@ -65,8 +66,8 @@ router.post('/login', validate, async(req, res) => {
 })
 
 router.get('/logout', async(req, res) => {
-  res.cookie('jwt', '', { maxAge: 1 })
-  res.status(201).json("uUer signed out")
+  res.cookie('netflix_watchlist_jwt', '', { maxAge: 1 })
+  res.status(201).json("User signed out")
 })
 
 router.get("/user", authorize, async (req, res) => {
@@ -74,11 +75,12 @@ router.get("/user", authorize, async (req, res) => {
       const user = await pool.query(
         "SELECT * FROM users WHERE user_id = $1",
         [req.user] 
-      ); 
-      res.json({user: user.rows[0]});
+      )
+      const { user_name, user_email } = user.rows[0]
+      res.json({user: { user_name, user_email } });
     } catch (err) {
       console.error(err.message);
-      res.status(500).send({"mesage": "Server error"});
+      res.status(500).send({error: "Server error"});
     }
   });
 
@@ -87,7 +89,7 @@ router.get("/", authorize, (req, res) => {
       res.json(true);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send({"mesage": "Server error"});
+      res.status(500).send({error: "Server error"});
     }
   });
 
@@ -98,11 +100,11 @@ router.get('/google/callback', passport.authenticate(
 ), (req, res) => {
   try {
     const token = jwtGenerator(req.user.user_id)
-    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge })
+    res.cookie('netflix_watchlist_jwt', token, { httpOnly: true, maxAge: maxAge })
     res.redirect(`${APP_REDIRECT_URI}`)
   } catch (error) {
     console.error(error.message)
-    res.redirect(`${APP_REDIRECT_URI}`)
+    res.redirect(`${APP_REDIRECT_URI}/login`)
   }
 })
 

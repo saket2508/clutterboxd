@@ -34,7 +34,7 @@ export default function Home() {
         getData()
     }, [])
 
-    if(loading || !currentUser || !watchlist){
+    if(loading){
         return(
             <div className="relative z-10 w-full">
                 <LoadingSpinner/>
@@ -59,7 +59,7 @@ export default function Home() {
         <div className="relative z-10 w-full">
             <div className="w-full p-6">
                 <div className="text-2xl xl:text-3xl pb-6 tracker-wide font-heading">
-                    Welcome, {currentUser.user.user_name}
+                    Welcome, {currentUser.user_name}
                 </div>
                 <div className="md:text-lg tracker-wid font-heading">
                     TRENDING MOVIES

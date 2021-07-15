@@ -6,31 +6,21 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import Error from "./components/Error";
 
 function App() {
-  const { isAuthenticated, currentUser, watchlist, error } = useContext(AppContext)
+  const { isAuthenticated, loading, error } = useContext(AppContext)
+
+  if(loading){
+    return(
+      <LoadingSpinner/>
+    )
+  }
   
-  if(isAuthenticated === null){
-    return(
-      <div className="w-full">
-        <LoadingSpinner/>
-      </div>
-    )
-  }
-
-  if(isAuthenticated === true && (!currentUser || !watchlist)){
-    return(
-      <div className="w-full">
-        <LoadingSpinner/>
-      </div>
-    )
-  }
-
   if(error){
     return(
       <Error/>
     )
   }
 
-  if(isAuthenticated === false){
+  if(!isAuthenticated){
     return(
       <LoginRoutes/>
     )

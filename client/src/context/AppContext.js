@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext } from 'react';
-import axios from 'axios';
+import { getAuthStatus, getUserInfo, getWatchlist } from '../helper';
 
 export const AppContext = createContext();
 
@@ -9,63 +9,55 @@ function AppProvider({ children }){
     const [ currentUser, setCurrentUser ] = useState(null)
     const [ watchlist, setWatchlist ] = useState(null)
     const [ error, setError ] = useState(null)
-
-    const getAuthStatus =  async() => {
-        try{
-            const res = await axios.get(`/auth`, { withCredentials: true })
-            const authRes = res.data
-            return authRes
-        } catch(err){
-            console.error(err.message)
-            return false
-        }
-    }
-
-    const getUser = async () => {
-        try{
-            const res = await axios.get(`/auth/user`, { withCredentials: true })
-            const user = res.data
-            return user 
-        } catch(err){
-            setError(true)
-            console.log(err.message)
-            return
-        }
-    }
-
-    const getWatchlist = async () => {
-        try{
-            const res = await axios.get(`/db`, { withCredentials: true })
-            const {watchlist} = res.data
-            return watchlist
-        } catch(err){
-            setError(true)
-            console.error(err.message)
-            return
-        }   
-    }
+    const [ loading, setLoading ] = useState(true)
 
     useEffect(() => {
-        async function authenticateUser(){
-            const status = await getAuthStatus()
-            setIsAuthenticated(status)
-        }
-        authenticateUser()
+        getAuthStatus()
+            .then(res => res.data)
+            .then(() => {
+                setIsAuthenticated(true)
+                setLoading(false)
+            }).catch(err => {
+                if(err.response.status === 403 || err.response.status === 401){
+                    setIsAuthenticated(false)
+                    setLoading(false)
+                } else{
+                    setError(true)
+                }
+            })
     }, [])
 
     useEffect(() => {
+        if(error) return
         if(!isAuthenticated) return
+        setLoading(true)
 
-        async function getData(){
-            if(isAuthenticated === true){
-                const user = await getUser()
-                const watchlist = await getWatchlist()
-                setCurrentUser(user)
-                setWatchlist(watchlist)
-            }
+        function getData(){
+            getUserInfo()
+                .then(res => res.data)
+                .then(data => {
+                    const { user } = data
+                    setCurrentUser(user)
+                }).catch(err => {
+                    console.error(err.message)
+                    setLoading(false)
+                    setError(true)
+                })
+            getWatchlist()
+                .then(res => res.data)
+                .then(data => {
+                    const { watchlist } = data
+                    setWatchlist(watchlist)
+                    setLoading(false)
+                }).catch(err => {
+                    console.error(err.message)
+                    setLoading(false)
+                    setError(true)
+                })
         }
+
         getData()
-    }, [isAuthenticated])
+    }, [isAuthenticated, error])
 
     return(
         <AppContext.Provider value = {{
@@ -75,6 +67,7 @@ function AppProvider({ children }){
             setCurrentUser,
             watchlist,
             setWatchlist,
+            loading,
             error
         }}>
             {children}
