@@ -255,10 +255,10 @@ export default function ContentShow({show}) {
                     <div className="mt-8 xl:ml-8 w-full">
                         <div className="flex justify-between items-center">
                             <div className="flex flex-wrap gap-1">
-                                <div className="text-xl sm:text-2xl xl:text-3xl font-medium font-heading">
+                                <div className="text-2xl xl:text-3xl font-medium font-heading">
                                     {getShowTitle(show)}
                                 </div>
-                                <div className="text-xl sm:text-2xl xl:text-3xl font-heading">
+                                <div className="text-2xl xl:text-3xl font-heading">
                                     {getReleaseYear(show)}
                                 </div>
                             </div>
