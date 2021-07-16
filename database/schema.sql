@@ -29,4 +29,16 @@ CREATE TABLE watchlist(
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+CREATE TABLE reviews(
+    user_id uuid NOT NULL,
+    index VARCHAR NOT NULL,
+    media_type VARCHAR NOT NULL,
+    title TEXT NOT NULL,
+    body TEXT NOT NULL,
+    rating INT NOT NULL,
+    reviewedAt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (index, media_type, user_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
 

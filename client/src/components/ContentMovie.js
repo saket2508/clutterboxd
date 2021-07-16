@@ -20,6 +20,12 @@ export default function ContentMovie({movie}) {
     const [ notif, setNotif ] = useState()
 
     useEffect(() => {
+        return ()=>{
+            clearTimeout(timerID)
+        }
+    }, [])
+
+    useEffect(() => {
         let res = checkIfMovieIsInDb()
         setMovieInList(res)
     }, [watchlist, movie])
@@ -125,11 +131,11 @@ export default function ContentMovie({movie}) {
     const release_date = movie.release_date
 
     const CoverImageLight = styled.div`
-            background-image: linear-gradient(180deg, rgba(244, 244, 245, 0) 68%, rgb(244, 244, 245) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
+            background-image: linear-gradient(180deg, rgba(244, 244, 245, 0) 68%, rgb(244, 244, 245) 100%), url(https://image.tmdb.org/t/p/w780${movie.poster_path});
             position: relative;
-            min-width: 300px;
-            width: 300px;
-            height: 450px;
+            min-width: 352px;
+            width: 352px;
+            height: 528px;
             background-size: cover;
             border:0;
 
@@ -153,11 +159,11 @@ export default function ContentMovie({movie}) {
     `
 
     const CoverImageDark = styled.div`
-            background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
+            background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://image.tmdb.org/t/p/w780${movie.poster_path});
             position: relative;
-            min-width: 300px;
-            width: 300px;
-            height: 450px;
+            min-width: 352px;
+            width: 352px;
+            height: 528px;
             background-size: cover;
             border:0;
 
@@ -256,8 +262,8 @@ export default function ContentMovie({movie}) {
         <div className="w-full relative">
             <div className="flex flex-col xl:flex-row items-center xl:items-start xl:px-20 p-6 w-100">
             {colorTheme === 'light' ? <CoverImageDark/> : <CoverImageLight/>}
-                    <div className="mt-8 xl:ml-8 flex flex-col">
-                        <div className="flex justify-between w-100 items-center">
+                    <div className="mt-8 xl:ml-8 w-full">
+                        <div className="flex justify-between items-center">
                             <div className="flex flex-wrap">
                                 <div className="text-2xl xl:text-3xl font-medium font-heading">
                                     {getMovieTitle(movie)}

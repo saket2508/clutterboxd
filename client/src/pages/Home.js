@@ -13,7 +13,7 @@ export default function Home() {
     const [ loading, setLoading ] = useState(true)
     const [ err, setErr ] = useState(false)
 
-    const { currentUser, watchlist } = useContext(AppContext)
+    const { currentUser } = useContext(AppContext)
 
     useEffect(() => {
         async function getData(){

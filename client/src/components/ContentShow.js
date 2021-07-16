@@ -20,6 +20,12 @@ export default function ContentShow({show}) {
     const [ notif, setNotif ] = useState()
 
     useEffect(() => {
+        return ()=>{
+            clearTimeout(timerID)
+        }
+    }, [])
+
+    useEffect(() => {
         let res = checkIfShowIsInDb()
         setShowInList(res)
     }, [watchlist, show])
@@ -105,7 +111,7 @@ export default function ContentShow({show}) {
     }
     
     const title = getShowTitle(show)
-    const poster_img = `https://image.tmdb.org/t/p/w500${show.poster_path}`
+    const poster_img = `https://image.tmdb.org/t/p/w780${show.poster_path}`
     const backdrop_img = `https://www.themoviedb.org/t/p/w1000_and_h563_face${show.backdrop_path}`
     const genres = getGenres(show)
     const overview = JSON.stringify(getOverview(show))
@@ -115,11 +121,11 @@ export default function ContentShow({show}) {
     const release_date = show.first_air_date
 
     const CoverImageLight = styled.div`
-        background-image: linear-gradient(180deg, rgba(244, 244, 245, 0) 68%, rgb(244, 244, 245) 100%), url(https://image.tmdb.org/t/p/w500${show.poster_path});
+        background-image: linear-gradient(180deg, rgba(244, 244, 245, 0) 68%, rgb(244, 244, 245) 100%), url(https://image.tmdb.org/t/p/w780${show.poster_path});
         position: relative;
-        min-width: 300px;
-        width: 300px;
-        height: 450px;
+        min-width: 352px;
+        width: 352px;
+        height: 528px;
         background-size: cover;
         border:0;
 
@@ -143,11 +149,11 @@ export default function ContentShow({show}) {
     `
 
     const CoverImageDark = styled.div`
-        background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://image.tmdb.org/t/p/w500${show.poster_path});
+        background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://image.tmdb.org/t/p/w780${show.poster_path});
         position: relative;
-        min-width: 300px;
-        width: 300px;
-        height: 450px;
+        min-width: 352px;
+        width: 352px;
+        height: 528px;
         background-size: cover;
         border:0;
 
@@ -244,15 +250,15 @@ export default function ContentShow({show}) {
     return (
         <>
         <div className="relative w-full h-full">
-            <div className="flex flex-col xl:flex-row items-center xl:items-start xl:px-20 p-6 w-100">
+            <div className="flex flex-col xl:flex-row items-center xl:items-start xl:px-20 p-6 w-full">
                     {colorTheme === 'light' ? <CoverImageDark/> : <CoverImageLight/>}
-                    <div className="mt-8 xl:ml-8 flex flex-col">
-                        <div className="flex justify-between w-100 items-center">
+                    <div className="mt-8 xl:ml-8 w-full">
+                        <div className="flex justify-between items-center">
                             <div className="flex flex-wrap gap-1">
-                                <div className="text-2xl xl:text-3xl font-medium font-heading">
+                                <div className="text-xl sm:text-2xl xl:text-3xl font-medium font-heading">
                                     {getShowTitle(show)}
                                 </div>
-                                <div className="text-2xl xl:text-3xl font-heading">
+                                <div className="text-xl sm:text-2xl xl:text-3xl font-heading">
                                     {getReleaseYear(show)}
                                 </div>
                             </div>

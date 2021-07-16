@@ -4,6 +4,7 @@
   "description": "backend for movies app",
   "main": "server.js",
   "scripts": {
+    "logs":"heroku logs --tail",
     "client-install": "npm install --prefix client",
     "start": "node server.js",
     "server": "nodemon server.js",
