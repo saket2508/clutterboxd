@@ -1,11 +1,11 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
-import Navbar from '../components/Navbar';
-import BottomNavbar from '../components/BottomNavbar';
-import Home from "../pages/Home";
-import Movie from '../pages/Movie';
-import Show from '../pages/Show';
-import List from '../pages/List';
+import React from 'react'
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom"
+import Navbar from '../components/Navbar'
+import BottomNavbar from '../components/BottomNavbar'
+import Home from "../pages/Home"
+import Movie from '../pages/Movie'
+import Show from '../pages/Show'
+import List from '../pages/List'
 
 export default function AppRoutes(){
     return (

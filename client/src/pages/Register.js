@@ -26,11 +26,10 @@ export default function Register(props) {
                 name: name,
                 email: email,
                 password: password
-            }, {
-                withCredentials: true
             })
-            const { message, success } = res.data
+            const { message, success, token } = res.data
             setNotif({message, success})
+            localStorage.setItem('token', token)
             if(success === true){
                 setLoading(false)
                 setIsAuthenticated(true)

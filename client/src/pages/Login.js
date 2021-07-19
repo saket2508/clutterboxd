@@ -13,6 +13,7 @@ export default function Login(props) {
     const [ password, setPassword ] = useState()
     const [ notif, setNotif ] = useState()
 
+
     const submitData = async(e) => {
         e.preventDefault()
         setLoading(true)
@@ -20,11 +21,10 @@ export default function Login(props) {
             const res = await axios.post(`/auth/login`, {
                 email: email,
                 password: password,
-            }, {
-                withCredentials: true
             })
-                const { message, success } = res.data
+                const { message, success, token } = res.data
                 setNotif({message, success})
+                localStorage.setItem('token', token)
                 if(success === true){
                     setLoading(false)
                     setIsAuthenticated(true)

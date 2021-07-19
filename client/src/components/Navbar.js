@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import Search from './Search';
-import { Link } from "react-router-dom"; 
-import { AppContext } from '../context/AppContext';
-import { ThemeContext } from '../context/ThemeContext';
-import axios from 'axios';
+import React, { useContext } from 'react'
+import Search from './Search'
+import { Link } from "react-router-dom";
+import { AppContext } from '../context/AppContext'
+import { ThemeContext } from '../context/ThemeContext'
+import axios from 'axios'
 
 export default function Navbar() {
 
@@ -11,12 +11,8 @@ export default function Navbar() {
     const { colorTheme, setTheme } = useContext(ThemeContext)
 
     const signOut = () => {
-        axios.get(`/auth/logout`, {
-            withCredentials: true
-        }).then(() => {
-            setIsAuthenticated(false)
-            setCurrentUser(null)
-        })
+        localStorage.removeItem('token', null)
+        window.location.pathname = '/'
     }
 
     return (

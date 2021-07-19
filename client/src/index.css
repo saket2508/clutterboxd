@@ -76,6 +76,20 @@ body {
   border-radius: .25rem;
 }
 
+.reviewtextfield{
+  display: block;
+  min-width: 300px;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  background-clip: padding-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: .25rem;
+}
+
 small {
   font-weight: 500;
   display: flex;

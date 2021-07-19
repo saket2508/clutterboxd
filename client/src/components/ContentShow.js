@@ -1,23 +1,40 @@
-import React, { useContext, useEffect, useState, useRef } from 'react'; 
-import styled from 'styled-components';
-import { AppContext } from '../context/AppContext';
-import { ThemeContext } from '../context/ThemeContext';
-import axios from 'axios';
+import React, { useContext, useEffect, useState, useRef } from 'react'
+import styled from 'styled-components'
+import Rating from '@material-ui/lab/Rating'
+import Box from '@material-ui/core/Box'
+import StarIcon from '@material-ui/icons/Star'
+import { AppContext } from '../context/AppContext'
+import { ThemeContext } from '../context/ThemeContext'
+import axios from 'axios'
 
-export default function ContentShow({show}) {
+const ADD_TO_LIST = process.env.NODE_ENV === "production" ? 'https://netflixwatchlist.herokuapp.com/db/add/tv' : '/db/add/tv'
+const REMOVE_FROM_LIST = process.env.NODE_ENV === "production" ? 'https://netflixwatchlist.herokuapp.com/db/delete/tv' : '/db/delete/tv'
+
+export default function ContentShow({show, setReviewFormOpen}) {
 
     let timerID = useRef(null)
-    const { watchlist, setWatchlist } = useContext(AppContext)
+    const { watchlist, setWatchlist, userReviews } = useContext(AppContext)
     const { colorTheme } = useContext(ThemeContext)
     const media_type = 'tv'
     const id = show.id
+
     const checkIfShowIsInDb = () =>{
         return watchlist && watchlist.find(item => (item.index === id && item.media_type === media_type)) ? true : false
     }
 
-    const [showInList, setShowInList] = useState(checkIfShowIsInDb)
+    const checkIfUserHasReviewedShow = () => {
+        return userReviews && userReviews.find(item => (item.index === id && item.media_type === media_type)) ? true : false
+    }
+
+    const [ userHasPostedReview, setUserHasPostedReview ] = useState(checkIfUserHasReviewedShow)
+    const [ showInList, setShowInList ] = useState(checkIfShowIsInDb)
 
     const [ notif, setNotif ] = useState()
+    const [ isReadMore, setIsReadMore ] = useState(false)
+
+    const toggleReadMore = () => {
+        setIsReadMore(!isReadMore)
+    }
 
     useEffect(() => {
         return ()=>{
@@ -26,9 +43,12 @@ export default function ContentShow({show}) {
     }, [])
 
     useEffect(() => {
-        let res = checkIfShowIsInDb()
-        setShowInList(res)
+        setShowInList(checkIfShowIsInDb)
     }, [watchlist, show])
+
+    useEffect(() => {
+        setUserHasPostedReview(checkIfUserHasReviewedShow)
+    }, [userReviews, show])
 
 
     const getShowTitle = show => {
@@ -68,37 +88,43 @@ export default function ContentShow({show}) {
         if(!show.vote_average){
             return <div></div>
         }
-        let rating_out_of_five = Math.round(parseInt(show.vote_average)/2)
+        let rating_out_of_five = Math.round(parseInt(show.vote_average))*0.5
        return(
-           <div className="inline-flex pt-4 text-yellow-300">
-               { Array(5).fill().map((d, i) => {
-                   if(i <= rating_out_of_five-1)
-                    {
-                        return(
-                        <div key={i} className="px-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                        </div>     
-                        )
-                    } else{
-                        return(
-                            <div key={i} className="px-1 light:text-gray-400 dark:text-gray-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                </svg>
-                            </div>     
-                            )
-                    }
-
-                })}
-           </div>
+            <div className="pt-4">
+                <Box component="fieldset" borderColor="transparent">
+                    <Rating
+                        name="read-only"
+                        precision={0.5}
+                        value={rating_out_of_five}
+                        icon={<StarIcon/>}
+                        emptyIcon={<StarIcon color='inherit'/>}
+                        readOnly
+                    />
+                </Box>
+            </div>
        )
 
     } 
 
-    const getOverview = show => {
-        return  `${show.overview}`
+    const DisplayOverview = ({show}) => {
+        const shortened_text = show.overview.split('.').slice(0, 2).join()
+
+        if(show.overview.length < 300){
+            return(
+                <p className="mt-3 font-body font-light">
+                    {show.overview}
+                </p>
+            )
+        }
+
+        return(
+            <p className="mt-3 font-body font-light">
+                {isReadMore ? show.overview : `${shortened_text}...`}
+                <span onClick={toggleReadMore} className="font-medium dark:text-white hover:underline">
+                    {isReadMore ? " Show less" : " See more"}
+                </span>
+            </p>
+        )
     }
 
     const getCast = show => {
@@ -112,9 +138,9 @@ export default function ContentShow({show}) {
     
     const title = getShowTitle(show)
     const poster_img = `https://image.tmdb.org/t/p/w780${show.poster_path}`
-    const backdrop_img = `https://www.themoviedb.org/t/p/w1000_and_h563_face${show.backdrop_path}`
+    const backdrop_img = `https://www.themoviedb.org/t/p/w1066_and_h600_face${show.backdrop_path}`
     const genres = getGenres(show)
-    const overview = JSON.stringify(getOverview(show))
+    const overview = JSON.stringify(show.overview)
     const cast_and_credits = getCast(show)
     const number_of_seasons = show.number_of_seasons
     const tmdb_rating = show.vote_average
@@ -125,6 +151,7 @@ export default function ContentShow({show}) {
         position: relative;
         min-width: 352px;
         width: 352px;
+
         height: 528px;
         background-size: cover;
         border:0;
@@ -134,7 +161,7 @@ export default function ContentShow({show}) {
         border:0;
         min-width:100%;
         background-size: cover;
-        background-image: linear-gradient(180deg, rgba(244, 244, 245, 0) 68%, rgb(244, 244, 245) 100%), url(https://www.themoviedb.org/t/p/w1000_and_h563_face${show.backdrop_path});
+        background-image: linear-gradient(180deg, rgba(244, 244, 245, 0) 68%, rgb(244, 244, 245) 100%), url(https://www.themoviedb.org/t/p/w1066_and_h600_face${show.backdrop_path});
     }
 
     @media(max-width: 600px){
@@ -162,7 +189,7 @@ export default function ContentShow({show}) {
         border:0;
         min-width:100%;
         background-size: cover;
-        background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://www.themoviedb.org/t/p/w1000_and_h563_face${show.backdrop_path});
+        background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://www.themoviedb.org/t/p/w1066_and_h600_face${show.backdrop_path});
     }
 
     @media(max-width: 600px){
@@ -180,12 +207,12 @@ export default function ContentShow({show}) {
         // will set button icon to 'liked' ie filled heart
         setShowInList(true)
         try {
-            const res = await axios.post(`/db/add/tv`, {
+            const res = await axios.post(`${ADD_TO_LIST}`, {
                 media_type: media_type,
                 id: id,
                 item: {title, poster_img, backdrop_img, genres, overview, cast_and_credits, number_of_seasons, tmdb_rating, release_date}
             }, {
-                withCredentials: true,
+                headers: { jwt_token: localStorage.token }
             })
             const {newItem, message, success} = res.data
             setWatchlist(watchlist => [...watchlist, newItem])
@@ -205,9 +232,8 @@ export default function ContentShow({show}) {
         // will set button icon to 'unliked' ie empty heart
         setShowInList(false)
         try {
-            const res = await axios.delete(`/db/delete/tv/${id}`, {
-                withCredentials: true,
-
+            const res = await axios.delete(`${REMOVE_FROM_LIST}/${id}`, {
+                headers: { jwt_token: localStorage.token }
             })
             const {success, message} = res.data
             setWatchlist(watchlist => watchlist.filter(item => (item.index !== id || item.media_type !== media_type)))
@@ -249,11 +275,11 @@ export default function ContentShow({show}) {
 
     return (
         <>
-        <div className="relative w-full h-full">
+        <div className="relative w-full">
             <div className="flex flex-col xl:flex-row items-center xl:items-start xl:px-20 p-6 w-full">
                     {colorTheme === 'light' ? <CoverImageDark/> : <CoverImageLight/>}
                     <div className="mt-8 xl:ml-8 w-full">
-                        <div className="flex justify-between items-center">
+                        <div className="flex flex-col">
                             <div className="flex flex-wrap gap-1">
                                 <div className="text-2xl xl:text-3xl font-medium font-heading">
                                     {getShowTitle(show)}
@@ -262,18 +288,35 @@ export default function ContentShow({show}) {
                                     {getReleaseYear(show)}
                                 </div>
                             </div>
-                            {showInList===true ? <button onClick={() => RemoveFromList()} className="bg-white dark:bg-card-dark text-red-600 dark:text-red-400 shadow-xl rounded-full p-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                            </svg>
-                            </button> : <button onClick={() => AddToList()} className="bg-white dark:bg-card-dark text-black dark:text-white shadow-xl rounded-full p-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            <div className="flex pt-4">
+                                {userHasPostedReview 
+                                ? <a role="button" href="#reviews" className="bg-white dark:bg-card-dark shadow-xl rounded-full flex items-center p-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg>
+                                    <span className="pl-1 text-black dark:text-white text-sm">See Reviews</span>
+                                </a> 
+                                : <button onClick={() => setReviewFormOpen(true)} className="bg-white dark:bg-card-dark shadow-xl rounded-full flex items-center p-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg>
+                                    <span className="pl-1 text-black dark:text-white text-sm">Post Review</span>
+                                </button>}
+                                {showInList===true ? <button onClick={() => RemoveFromList()} className="bg-white dark:bg-card-dark text-red-600 dark:text-red-400 shadow-xl rounded-full flex items-center p-2 ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                                 </svg>
-                            </button>}
+                                <span className="pl-1 text-black dark:text-white text-sm">Remove from List</span>
+                                </button> : <button onClick={() => AddToList()} className="bg-white dark:bg-card-dark text-black dark:text-white shadow-xl rounded-full flex items-center p-2 ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                    <span className="pl-1 text-black dark:text-white text-sm">Add to List</span>
+                                </button>}
+                            </div>
                         </div>
                         <DisplayRating show={show}/>
-                        <ul className="mt-3 list-disc list-inside flex flex-col gap-2 font-light">
+                        <ul className="mt-3 list-disc list-inside flex flex-col sm:flex-row gap-2 font-light">
                             <li>
                                 {getGenres(show)}
                             </li>
@@ -281,21 +324,19 @@ export default function ContentShow({show}) {
                                 {getNumberOfSeasone(show)}
                             </li>
                         </ul>
-                        {show.overview ? <div className="mt-6">
-                            <div className="text-xl font-heading">
-                                Overview
-                            </div>
-                            <p className="mt-3 leading-relaxed font-light">
-                                {getOverview(show)}
-                            </p>
-                        </div> : <div></div>}
-                        {show.cast && show.cast.length !== 0 ? <div className="mt-6">
+                        {show.cast && show.cast.length !== 0 ? <div className="mt-6 font-heading">
                             <div className="text-xl font-heading">
                                 Cast
                             </div>
-                            <div className="flex flex-wrap mt-3 font-light">
+                            <div className="flex flex-wrap mt-3 font-body font-light">
                                 {getCast(show)}
                             </div>
+                        </div> : <div></div>}
+                        {show.overview ? <div className="mt-6 font-heading">
+                            <div className="text-xl">
+                                Overview
+                            </div>
+                            <DisplayOverview show={show}/>
                         </div> : <div></div>}
                     </div>
                 </div>

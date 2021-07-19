@@ -83,7 +83,7 @@ export default function Search() {
 
     return (
         <>
-        <div className="hidden md:inline-block mr-2 xl:mr-6">
+        <div className="hidden md:inline-block mr-2">
             <div className="relative">
                     <div className="absolute left-2 top-2">
                         <div className="inline-block text-gray-600 dark:text-white">
