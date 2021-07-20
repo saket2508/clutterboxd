@@ -1,5 +1,7 @@
 ## Netflix Watchlist
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/81eb625f-161e-4f3d-a46e-864c693e1b9a/deploy-status)](https://app.netlify.com/sites/netflixwatchlist/deploys)
+
 - A movie search app built using React, Node and PostgreSQL.
 - You can explore movies and shows trending in your region and add the ones you plan on watching to your watchlist. You can rate and review them too.
 - You can also search for a particular movie or show within the site. All data is obtained from TMDB's public API.
