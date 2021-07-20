@@ -76,13 +76,13 @@ body {
   border-radius: .25rem;
 }
 
-.reviewtextfield{
+.textfieldtitle{
   display: block;
-  min-width: 300px;
+  width: 100%;
   padding: .375rem .75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.75;
   background-clip: padding-box;
   -webkit-appearance: none;
   -moz-appearance: none;

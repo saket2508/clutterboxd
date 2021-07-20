@@ -15,8 +15,6 @@ export default function Home() {
 
     const { currentUser } = useContext(AppContext)
 
-    console.log(`https://api.themoviedb.org/3/trending/movie/week?api_key=${APIkey}`)
-
     useEffect(() => {
         async function getData(){
             try{

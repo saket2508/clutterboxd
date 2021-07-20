@@ -26,6 +26,10 @@ module.exports = {
           light: colors.gray[200],
           dark: colors.gray[700]
         },
+        form:{
+          light: colors.white,
+          dark: colors.gray[800]
+        },
         text:{
           primary:{
             light:colors.black,
