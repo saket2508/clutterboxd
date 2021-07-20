@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from 'axios'
 import { AppContext } from '../context/AppContext'
 
-const GOOGLE_OAUTH_URI = process.env.NODE_ENV === "production"? 'https://netflixwatchlist.herokuapp.com/oauth' : 'http://localhost:5000/oauth'
+const SERVER_URI = process.env.NODE_ENV === "production" ? "https://netflixwatchlist.herokuapp.com" : 'http://localhost:5000'
 
 export default function Login(props) {
 
@@ -18,7 +18,7 @@ export default function Login(props) {
         e.preventDefault()
         setLoading(true)
         try {
-            const res = await axios.post(`/auth/login`, {
+            const res = await axios.post(`${SERVER_URI}/auth/login`, {
                 email: email,
                 password: password,
             })
@@ -33,7 +33,8 @@ export default function Login(props) {
             console.error(err.message)
             setLoading(false)
             if(err.response){
-                const {error} = err.response.data
+                console.log(err.response.data)
+                const { error } = err.response.data
                 setNotif({success: false, message: error})
             }
             else{
@@ -80,7 +81,7 @@ export default function Login(props) {
                             OR
                         </div>
                         <button className="w-32 p-1 rounded-full w-full text-sm text-white bg-red-600 dark:bg-red-400 font-semibold mt-2">
-                            <a href ={`${GOOGLE_OAUTH_URI}/`}>
+                            <a href ={`${SERVER_URI}/oauth`}>
                                 <i class="fab fa-google pr-2"></i>
                                 Continue with Google
                             </a>

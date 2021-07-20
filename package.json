@@ -1,0 +1,28 @@
+{
+  "name": "movies",
+  "version": "1.0.0",
+  "description": "A movie search app made using React, Node and PostgreSQL.",
+  "main": "server.js",
+  "scripts": {
+    "start": "npm run start --prefix server",
+    "server": "npm run server --prefix server",
+    "client": "npm start --prefix client",
+    "deploy": "git subtree push --prefix server heroku master",
+    "logs": "heroku logs --tail",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saket2508/netflix-watchlist.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saket2508/netflix-watchlist/issues"
+  },
+  "homepage": "https://github.com/saket2508/netflix-watchlist#readme",
+  "dependencies": {
+    "concurrently": "^6.2.0"
+  }
+}
