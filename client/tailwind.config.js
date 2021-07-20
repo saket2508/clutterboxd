@@ -20,7 +20,7 @@ module.exports = {
         },
         card:{
           light:colors.white,
-          dark:colors.gray[800]
+          dark:colors.gray[900]
         },
         search:{
           light: colors.gray[200],

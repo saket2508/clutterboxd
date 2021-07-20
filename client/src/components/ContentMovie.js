@@ -188,7 +188,7 @@ export default function ContentMovie({movie, setReviewFormOpen}) {
     `
 
     const CoverImageDark = styled.div`
-            background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://image.tmdb.org/t/p/w780${movie.poster_path});
+            background-image: linear-gradient(180deg, rgba(0,0,0, 0) 68%, rgb(0,0,0) 100%), url(https://image.tmdb.org/t/p/w780${movie.poster_path});
             position: relative;
             min-width: 352px;
             width: 352px;
@@ -201,11 +201,11 @@ export default function ContentMovie({movie, setReviewFormOpen}) {
             border:0;
             min-width:100%;
             background-size: cover;
-            background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://www.themoviedb.org/t/p/w1066_and_h600_face${movie.backdrop_path});
+            background-image: linear-gradient(180deg, rgba(0,0,0, 0) 68%, rgb(0,0,0) 100%), url(https://www.themoviedb.org/t/p/w1066_and_h600_face${movie.backdrop_path});
         }
 
         @media(max-width: 600px){
-            background-image: linear-gradient(180deg, rgba(24,24,27, 0) 68%, rgb(24,24,27) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
+            background-image: linear-gradient(180deg, rgba(0,0,0, 0) 68%, rgb(0,0,0) 100%), url(https://image.tmdb.org/t/p/w500${movie.poster_path});
             position: relative;
             min-width: 300px;
             width: 300px;
