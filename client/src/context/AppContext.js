@@ -11,7 +11,7 @@ function AppProvider({ children }){
     const [ userReviews, setUserReviews ] = useState(null)
     const [ error, setError ] = useState(null)
     const [ loading, setLoading ] = useState(true)
-    const [ token, setToken] = useState(localStorage.getItem('token'))
+    const [ token, setToken ] = useState(localStorage.getItem('token'))
 
     useEffect(() => {
         getAuthStatus()

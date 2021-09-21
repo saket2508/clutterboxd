@@ -10,8 +10,7 @@ module.exports = {
         bounce400: 'bounce 1s infinite 400ms',
       },
       fontFamily:{
-        body:['Montserrat', 'sans-serif'],
-        heading: ['Open Sans', 'sans-serif']
+        body:['Poppins', 'sans-serif'],
       },
       colors:{
         primary:{
@@ -19,6 +18,10 @@ module.exports = {
           dark: colors.black
         },
         card:{
+          light:colors.white,
+          dark:colors.gray[800]
+        },
+        navbar: {
           light:colors.white,
           dark:colors.gray[900]
         },

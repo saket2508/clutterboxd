@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import Rating from '@material-ui/lab/Rating'
-import Box from '@material-ui/core/Box'
-import StarIcon from '@material-ui/icons/Star'
+import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating';
+import StarIcon from '@mui/icons-material/Star'
 import { AppContext } from '../context/AppContext'
-import { ThemeContext } from '../context/ThemeContext'
+import { UIThemeContext } from '../context/UIThemeContext'
 import axios from 'axios'
 
 const ADD_TO_LIST = process.env.NODE_ENV === "production" ? 'https://netflixwatchlist.herokuapp.com/db/add/movie' : '/db/add/movie'
@@ -15,7 +15,7 @@ export default function ContentMovie({movie, setReviewFormOpen}) {
 
     let timerID = useRef(null)
     const { watchlist, setWatchlist, userReviews } = useContext(AppContext)
-    const { colorTheme } = useContext(ThemeContext)
+    const { colorTheme } = useContext(UIThemeContext)
     const media_type = 'movie'
     const id = movie.id
 
@@ -108,8 +108,7 @@ export default function ContentMovie({movie, setReviewFormOpen}) {
                         name="read-only"
                         precision={0.5}
                         value={rating_out_of_five}
-                        icon={<StarIcon/>}
-                        emptyIcon={<StarIcon color='inherit'/>}
+                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
                         readOnly
                     />
                </Box>
@@ -262,11 +261,10 @@ export default function ContentMovie({movie, setReviewFormOpen}) {
     }
 
     const Notification = ({ message, success }) => {
-
         if(success === true){
             return(
                 <div className="fixed bottom-20 mb-10 sm:mb-0 sm:bottom-10 left-0 right-0 flex justify-center w-100">
-                    <div className="inline-block bg-green-100 text-green-600 dark:bg-green-600 dark:text-white shadow rounded">
+                    <div className="inline-block bg-green-600 text-white shadow rounded">
                             <div className="p-3">
                                 {message}
                             </div>
@@ -276,7 +274,7 @@ export default function ContentMovie({movie, setReviewFormOpen}) {
         }
         return(
             <div className="fixed bottom-20 mb-10 sm:mb-0 sm:bottom-10 left-0 right-0 flex justify-center w-100">
-                    <div className="inline-block bg-red-100 text-red-600 dark:bg-red-600 dark:text-white shadow rounded">
+                    <div className="inline-block bg-red-600 text-white shadow rounded">
                             <div className="p-3">
                                 {message}
                             </div>
@@ -294,37 +292,37 @@ export default function ContentMovie({movie, setReviewFormOpen}) {
                     <div className="mt-8 xl:ml-8 w-full">
                         <div className="flex flex-col">
                             <div className="flex flex-wrap">
-                                <div className="text-2xl xl:text-3xl font-medium font-heading">
+                                <div className="text-2xl xl:text-3xl font-medium">
                                     {getMovieTitle(movie)}
                                 </div>
-                                <div className="text-2xl xl:text-3xl pl-1 font-light font-heading">
+                                <div className="text-2xl xl:text-3xl pl-1 font-light">
                                     {getReleaseYear(movie)}
                                 </div>
                             </div>
                             <div className="flex pt-4">
                                 {userHasPostedReview 
                                 ? <a role="button" href="#reviews" className="bg-white dark:bg-card-dark shadow-xl rounded-full p-2 flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-700 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                         </svg>
-                                    <span className="pl-1 text-black dark:text-white text-sm">See Reviews</span>
+                                    <span className="pl-1 text-gray-700 dark:text-white text-sm">See Reviews</span>
                                 </a>
                                 : <button onClick={() => setReviewFormOpen(true)} className="bg-white dark:bg-card-dark shadow-xl rounded-full p-2 flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-700 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                         </svg>
-                                        <span className="pl-1 text-black dark:text-white text-sm">Post Review</span>
+                                        <span className="pl-1 text-gray-700 dark:text-white text-sm">Post Review</span>
                                 </button>}
                                 {movieInList===true ? <button onClick={() => RemoveFromList()} className="bg-white dark:bg-card-dark text-red-600 dark:text-red-400 shadow-xl rounded-full flex items-center p-2 ml-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-600 dark:text-red-400" viewBox="0 0 20 20" fill="currentColor">
                                         <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                                 </svg>
-                                <span className="pl-1 text-black dark:text-white text-sm">Remove from List</span>
+                                <span className="pl-1 text-gray-700 dark:text-white text-sm">Remove from List</span>
                                 </button> : <button onClick={() => AddToList()} className="bg-white dark:bg-card-dark text-black dark:text-white shadow-xl rounded-full flex items-center p-2 ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-700 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                     </svg>
-                                    <span className="pl-1 text-black dark:text-white text-sm">Add to List</span>
+                                    <span className="pl-1 text-gray-700 dark:text-white text-sm">Add to List</span>
                                 </button>}
                             </div>
                         </div>
@@ -337,7 +335,7 @@ export default function ContentMovie({movie, setReviewFormOpen}) {
                                 {getRuntime(movie)}
                             </li>
                         </ul>
-                        {movie.cast && movie.cast.length !== 0 ? <div className="mt-6 font-heading">
+                        {movie.cast && movie.cast.length !== 0 ? <div className="mt-6">
                             <div className="text-xl">
                                 Cast
                             </div>
@@ -345,7 +343,7 @@ export default function ContentMovie({movie, setReviewFormOpen}) {
                                 {getCast(movie)}
                             </div>
                         </div> : <div></div>}
-                        {movie.overview ? <div className="mt-6 font-heading">
+                        {movie.overview ? <div className="mt-6">
                             <div className="text-xl">
                                 Overview
                             </div>

@@ -18,7 +18,6 @@ export default function Show() {
     const [ showInfo, setShowInfo ] = useState()
     const [ reviewFormOpen, setReviewFormOpen ] = useState(false)
     const media_type = 'tv'
-
     const { setError } = useContext(AppContext)
     
     useEffect(() => {

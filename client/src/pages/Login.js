@@ -48,7 +48,7 @@ export default function Login(props) {
         <div className="container">
             <div className="pt-10 flex justify-center">
                 <div className="bg-white dark:bg-card-dark border border-gray-300 dark:border-transparent rounded mx-4 px-6 py-4 w-full md:w-3/4 lg:w-1/2 xl:w-1/3">
-                    <div className="mt-1 text-center font-bold tracker-wide light:text-gray-700 text-xl font-heading">
+                    <div className="mt-1 text-center font-bold tracker-wide light:text-gray-700 text-xl">
                         NETFLIX WATCHLIST
                     </div>
                     <p className="leading-snug text-text-secondary-light dark:text-text-secondary-dark my-3 mt-3 text-center text-sm">
@@ -69,9 +69,9 @@ export default function Login(props) {
                             </div>}
                        </div>
                        <div className="mt-3 flex-grow-1">
-                            {loading===false ? <button type="submit" className="w-32 bg-indigo-500 text-sm sm:text-base text-white p-1 rounded-full w-full font-semibold">
+                            {loading===false ? <button type="submit" className="w-32 bg-indigo-500 text-white p-1 rounded-full w-full">
                                Sign in 
-                            </button> : <button type="submit" className="w-32 bg-indigo-300 text-sm sm:text-base text-white p-1 rounded-full w-full font-semibold" disabled>
+                            </button> : <button type="submit" className="w-32 bg-indigo-300 text-white p-1 rounded-full w-full" disabled>
                                Loading... 
                             </button>}
                        </div>
@@ -80,7 +80,7 @@ export default function Login(props) {
                         <div className="text-sm text-center text-text-secondary-light dark:text-text-secondary-dark mt-2">
                             OR
                         </div>
-                        <button className="w-32 p-1 rounded-full w-full text-sm text-white bg-red-600 dark:bg-red-400 font-semibold mt-2">
+                        <button className="w-32 p-1 rounded-full w-full text-white bg-red-600 dark:bg-red-400 mt-2">
                             <a href ={`${SERVER_URI}/oauth`}>
                                 <i class="fab fa-google pr-2"></i>
                                 Continue with Google
@@ -88,9 +88,9 @@ export default function Login(props) {
                         </button>
                     </div>
                     <div className="pb-1 text-sm text-gray-700 dark:text-gray-400 mt-3">
-                            Don't have an account? <Link to="/register" className="hover:underline text-indigo-600">
-                                Sign up
-                            </Link>
+                        Don't have an account? <Link to="/register" className="hover:underline dark:text-indigo-400 text-indigo-600">
+                            Sign up
+                        </Link>
                     </div>
                 </div>
             </div>

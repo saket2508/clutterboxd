@@ -7,7 +7,7 @@ import Register from '../pages/Register'
 export default function LoginRoutes(){
     return(
         <Router>
-            <div className="w-full font-heading text-black dark:text-white">
+            <div className="w-full font-body text-black dark:text-white">
                 <Switch>
                     <Route exact path="/login" >
                         <Login/>

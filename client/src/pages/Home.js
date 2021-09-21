@@ -11,9 +11,7 @@ export default function Home() {
     const [ movies, setMovies ] = useState([])
     const [ shows, setShows ] = useState([])
     const [ loading, setLoading ] = useState(true)
-    const [ err, setErr ] = useState(false)
-
-    const { currentUser } = useContext(AppContext)
+    const { currentUser, setError } = useContext(AppContext)
 
     useEffect(() => {
         async function getData(){
@@ -26,8 +24,8 @@ export default function Home() {
                 setShows(req2.data.results)
                 setLoading(false)
             } catch(err){
+                setError(true)
                 setLoading(false)
-                setErr(true)
                 console.error(err.message)
             }
         }
@@ -42,26 +40,14 @@ export default function Home() {
         )
     }
 
-
-    if(err){
-        return(
-        <div className="relative z-10 w-full">
-            <div className="flex justify-center items-center mt-20 pt-20">
-                <p className="text-lg text-red-600 dark:text-red-400 font-bold tracker-wide">
-                    Could not get data from the API :(
-                </p>
-            </div>
-        </div>
-        )
-    }
-
     return (
-        <div className="relative z-10 w-full">
+        <>
+        {currentUser && movies && shows && <div className="relative z-10 w-full">
             <div className="w-full p-6">
-                <div className="text-2xl xl:text-3xl pb-6 tracker-wide font-heading">
+                <div className="text-2xl xl:text-3xl pb-6 tracker-wide">
                     Welcome, {currentUser.user_name}
                 </div>
-                <div className="md:text-lg tracker-wid font-heading">
+                <div className="md:text-lg tracker-wide">
                     TRENDING MOVIES
                 </div>
                 <div className="mt-6">
@@ -70,7 +56,7 @@ export default function Home() {
                         return(
                             <div className="flex flex-col items-center poster p-2" key={idx}>
                                 <Link to = {`/${movie.media_type}/${movie.id}`}>
-                                    <img alt='Movie thumbnail' className="poster-img" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                                    <img className="poster-img" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
                                 </Link>
                                 <div className="pt-2 text-sm font-light text-center px-2">
                                     {movie.title || movie.original_title || movie.original_name}
@@ -82,7 +68,7 @@ export default function Home() {
                 </div> 
             </div>
             <div className="w-full p-6">
-                <div className="md:text-lg tracker-wide font-heading">
+                <div className="md:text-lg tracker-wide">
                     TRENDING SHOWS
                 </div>
                 <div className="mt-6">
@@ -91,7 +77,7 @@ export default function Home() {
                         return(
                             <div className="flex flex-col items-center poster p-2" key={idx}>
                                 <Link to = {`/${show.media_type}/${show.id}`}>
-                                    <img alt='Show thumbnail' className="poster-img" src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}/>
+                                    <img className="poster-img" src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}/>
                                 </Link>
                                 <div className="pt-2 text-sm font-light text-center px-2">
                                     {show.title || show.original_title || show.original_name}
@@ -102,6 +88,7 @@ export default function Home() {
                     </div>
                 </div> 
             </div>
-        </div>
+        </div>}
+        </>
     )
 }

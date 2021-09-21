@@ -1,7 +1,7 @@
 import React from 'react'
-import Rating from '@material-ui/lab/Rating'
-import Box from '@material-ui/core/Box'
-import StarIcon from '@material-ui/icons/Star'
+import Rating from '@mui/material/Rating';
+import Box from '@mui/material/Box';
+import StarIcon from '@mui/icons-material/Star'
 
 export default function Reviews({ reviews, media_type }) {
 
@@ -51,7 +51,7 @@ export default function Reviews({ reviews, media_type }) {
 
     return (
         <div id="reviews" className="container my-3 px-6 xl:px-20">
-            <div className="font-heading font-medium text-xl">
+            <div className="text-xl">
                 Reviews
             </div>
             <div className="mt-3">

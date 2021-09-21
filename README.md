@@ -2,10 +2,19 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/81eb625f-161e-4f3d-a46e-864c693e1b9a/deploy-status)](https://app.netlify.com/sites/netflixwatchlist/deploys)
 
+## Todos
+
+1. [x] Create custom error and Not Found(404) pages.
+2. [x] Make fonts/styles consistent across UI.
+3. [x] Improve the review form interface.
+
+
+## Overview
+
 - A movie search app built using React, Node and PostgreSQL.
 - You can explore movies and shows trending in your region and add the ones you plan on watching to your watchlist. You can rate and review them too.
 - You can also search for a particular movie or show within the site. All data is obtained from TMDB's public API.
-- Here is a preview of the site: [Demo](https://netflixwatchlist.netlify.app/)
+- Here is the final production link of the app: [Link](https://netflixwatchlist.netlify.app/)
 - The Node/Express/Postgres backend has been deployed to heroku while the react front end has been hosted on netlify.
 
 ## Screenshots

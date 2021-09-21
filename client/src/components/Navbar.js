@@ -2,13 +2,13 @@ import React, { useContext } from 'react'
 import Search from './Search'
 import { Link } from "react-router-dom";
 import { AppContext } from '../context/AppContext'
-import { ThemeContext } from '../context/ThemeContext'
+import { UIThemeContext } from '../context/UIThemeContext'
 import axios from 'axios'
 
 export default function Navbar() {
 
-    const { currentUser, setCurrentUser, isAuthenticated, setIsAuthenticated } = useContext(AppContext)
-    const { colorTheme, setTheme } = useContext(ThemeContext)
+    const { currentUser, isAuthenticated } = useContext(AppContext)
+    const { colorTheme, setTheme } = useContext(UIThemeContext)
 
     const signOut = () => {
         localStorage.removeItem('token', null)
@@ -16,7 +16,7 @@ export default function Navbar() {
     }
 
     return (
-        <div className="fixed top-0 bg-white dark:bg-card-dark dark:text-white shadow px-6 py-4 w-full z-50 font-heading">
+        <div className="fixed top-0 bg-white dark:bg-navbar-dark dark:text-white shadow px-6 py-4 w-full z-50">
             <div className="hidden md:flex w-100 justify-between items-center">
                         <Link to = '/home'>
                             <div className="font-bold text-gray-700 dark:text-white tracker-wide">
@@ -38,10 +38,10 @@ export default function Navbar() {
                     </div>
                     {isAuthenticated ? <div>
                     {currentUser 
-                    && <div className="flex items-end">
-                        <div className="flex flex-col text-xs font-medium items-center px-4">
+                    && <div className="flex items-end text-gray-700 dark:text-white">
+                        <div className="flex flex-col text-xs items-center px-4">
                             Hello, {currentUser.user_name}
-                            <div className="font-medium pt-1 hover:underline" onClick={() => signOut()}>
+                            <div className="pt-1 hover:underline" onClick={() => signOut()}>
                                 LOG OUT
                             </div>
                         </div>
@@ -49,7 +49,7 @@ export default function Navbar() {
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                         </svg>
-                        <div className="pt-1 font-medium text-xs hover:underline">
+                        <div className="pt-1 text-xs hover:underline">
                             <Link to ="/list">
                                 YOUR LIST
                             </Link>

@@ -1,25 +1,26 @@
 import React, { useState, useContext } from 'react'
-import Rating from '@material-ui/lab/Rating'
-import Box from '@material-ui/core/Box'
-import Dialog from '@material-ui/core/Dialog'
-import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/icons/Close'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { useTheme } from '@material-ui/core/styles'
-import { colors } from '@material-ui/core'
-import { CircularProgress } from '@material-ui/core'
-
-import { ThemeContext } from '../context/ThemeContext'
+import Rating from '@mui/material/Rating';
+import Box from '@mui/material/Box'
+import Dialog from '@mui/material/Dialog'
+import IconButton from '@mui/material/IconButton'
+import CloseIcon from '@mui/icons-material/Close'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { useTheme } from '@mui/material/styles'
+import { colors } from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress'
+import { UIThemeContext } from '../context/UIThemeContext'
 import { AppContext } from '../context/AppContext'
-import StarIcon from '@material-ui/icons/Star'
+import StarIcon from '@mui/icons-material/Star'
+import Button from '@mui/material/Button'
+import TextareaAutosize from '@mui/material/TextareaAutosize'
+
 import axios from 'axios'
-import { Button } from '@material-ui/core'
 
 const ADD_REVIEW_URI = process.env.NODE_ENV === "production" ? 'https://netflixwatchlist.herokuapp.com/db/add/review' : '/db/add/review'
 
 export default function AddReview(props) {
 
-    const { colorTheme } = useContext(ThemeContext)
+    const { colorTheme } = useContext(UIThemeContext)
     const { currentUser, setUserReviews } = useContext(AppContext)
 
     // MODAL
@@ -28,7 +29,7 @@ export default function AddReview(props) {
     const [ loading, setLoading ] = useState(false)
     const [ body, setBody ] = useState()
     const [ title, setTitle ] = useState()
-    const [ rating, setRating ] = useState(5)
+    const [ rating, setRating ] = useState(0)
 
     const handleClose = () => {
         setReviewFormOpen(false)
@@ -37,7 +38,7 @@ export default function AddReview(props) {
     const clearForm = () => {
         setTitle()
         setBody()
-        setRating(5)
+        setRating(0)
         setReviewFormOpen(false)
     }
 
@@ -66,7 +67,7 @@ export default function AddReview(props) {
     }
 
     const theme = useTheme()
-    const fullScreen = useMediaQuery(theme.breakpoints.down('xs'))
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
     return (
         <div className="w-full md:w-3/4 lg:w-1/2 xl:w-1/3">
@@ -77,9 +78,8 @@ export default function AddReview(props) {
                 onClose={handleClose} 
                 aria-labelledby="review-dialog-title"
                 BackdropProps={{ style: { backgroundColor: "transparent" } }}
-                PaperProps = {{style: {backgroundColor: colorTheme==="light" ? "#27272A" : "white"}}}
             >
-                <form onSubmit={e => submitReviewData(e)} className="font-heading p-6">
+                <form onSubmit={e => submitReviewData(e)} className="font-body p-6">
                     <div className="hidden sm:flex justify-between items-start">
                         <div className="text-xl dark:text-white mb-4 font-medium">Post Review</div>
                         <IconButton size = "small" onClick={handleClose} aria-label="close">
@@ -92,13 +92,13 @@ export default function AddReview(props) {
                         </IconButton>
                         <div className="text-xl dark:text-white font-medium">Post Review</div>
                             {loading===true 
-                                ? <Button style={{color:'white', backgroundColor:colors.indigo[300]}} size="small" variant="contained" disabled>
-                                     <CircularProgress style={{color:'white'}} size={18} thickness={6}/>
-                                </Button>
-                                : <Button type="submit" style={{color:'white', backgroundColor:colors.indigo[500]}} size="small" variant="contained">POST</Button>
+                                ? <Button style={{color:'white', backgroundColor: '#818CF8'}} size="small" variant="contained" disabled>
+                                    <CircularProgress style={{color:'white'}} size={22} thickness={6}/>
+                                    </Button>
+                                : <Button type="submit" style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} size="small" variant="contained">POST</Button>
                             }
                         </div>
-                    <p className="pb-4 text-text-secondary-light dark:text-text-secondary-dark mt-4 mb-2 sm:m-0">
+                    <p className="pb-4 text-text-secondary-light dark:text-gray-200 mt-4 mb-2 sm:m-0">
                         Give your review a title and don't forget to add a rating
                     </p>
                     <Box component="fieldset" borderColor="transparent">
@@ -113,19 +113,31 @@ export default function AddReview(props) {
                             }}
                         />
                     </Box>
-                    <div className="mt-2">
-                        <input value={title} placeholder="Title" id="title" onChange={e => setTitle(e.target.value)} className="textfieldtitle w-100 focus:outline-none bg-white dark:bg-form-dark dark:text-white" required/>
-                    </div>
-                    <div className="mt-2">
-                        <textarea value={body} placeholder="Body" id="body" onChange={e => setBody(e.target.value)} rows={8} className="textfield w-100 focus:outline-none bg-white dark:bg-form-dark dark:text-white" required/>
-                    </div>
-                    <div className='hidden sm:flex justify-end mt-3'>
-                        {loading===true 
-                        ? <Button style={{color:'white', backgroundColor:colors.indigo[300]}} size="small" variant="contained" disabled>
-                            <CircularProgress style={{color:'white'}} size={18} thickness={6}/>
-                          </Button>
-                        : <Button type="submit" style={{color:'white', backgroundColor:colors.indigo[500]}} size="small" variant="contained">POST</Button>
-                        }
+                    <div className="container">
+                        <div className="mt-2">
+                            <input value={title} placeholder="Title" id="title" onChange={e => setTitle(e.target.value)} className="textfield w-100 focus:outline-none bg-transparent dark:text-white" required/>
+                        </div>
+                        <div className="mt-2">
+                            {/* <textarea value={body} placeholder="Body" id="body" onChange={e => setBody(e.target.value)} rows={fullScreen ? 12 : 8} className="textfield w-100 h-100 sm:h-auto focus:outline-none bg-transparent dark:text-white" required/>
+                             */}
+                             <TextareaAutosize
+                                placeholder = "Body"
+                                id = "body"
+                                onChange={e => setBody(e.target.value)}
+                                value = {body}
+                                minRows = {fullScreen ? 12 : 8}
+                                className="textfield w-100 h-100 sm:h-auto focus:outline-none bg-transparent dark:text-white"
+                                required
+                             />
+                        </div>
+                        <div className='hidden sm:flex justify-end mt-3'>
+                            {loading===true 
+                            ? <Button style={{color:'white', backgroundColor: '#818CF8'}} size="small" variant="contained" disabled>
+                                <CircularProgress style={{color:'white'}} size={22} thickness={6}/>
+                            </Button>
+                            : <Button type="submit" style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} size="small" variant="contained">POST</Button>
+                            }
+                        </div>
                     </div>
                 </form>
         </Dialog>

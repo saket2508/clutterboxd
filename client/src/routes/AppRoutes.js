@@ -6,6 +6,7 @@ import Home from "../pages/Home"
 import Movie from '../pages/Movie'
 import Show from '../pages/Show'
 import List from '../pages/List'
+import NotFound from '../components/NotFound'
 
 export default function AppRoutes(){
     return (
@@ -29,9 +30,7 @@ export default function AppRoutes(){
                         <Route exact path="/">
                             <Redirect to="/home"/>
                         </Route>
-                        <Route exact path = "*">
-                            <Redirect to="/home"/>
-                        </Route>
+                        <Route component={NotFound}/>
                    </Switch>
                 </main>
                 <BottomNavbar/>

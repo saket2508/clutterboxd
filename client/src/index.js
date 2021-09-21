@@ -3,17 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
 import AppProvider from "./context/AppContext";
-import ThemeProvider from "./context/ThemeContext";
-
+import UIThemeProvider from "./context/UIThemeContext";
+import MUIThemeProvider from "./context/MuiThemeContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <AppProvider>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
+      <UIThemeProvider>
+        <MUIThemeProvider>
+          <App/>
+        </MUIThemeProvider>
+      </UIThemeProvider>
     </AppProvider>
   </React.StrictMode>,
   document.getElementById('root')
