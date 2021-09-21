@@ -7,7 +7,7 @@ export default function BottomNavbar() {
     
     return (
         <div className="block sm:hidden bottom-0 right-0 left-0 flex-0 fixed overflow-hidden w-100 z-10 shadow">
-            <div className="py-5 px-10 bg-white dark:bg-card-dark text-text-secondary-light dark:text-text-secondary-dark w-full flex justify-around">
+            <div className="py-5 px-10 bg-white dark:bg-navbar-dark text-text-secondary-light dark:text-text-secondary-dark w-full flex justify-around">
                <Link to="/home">
                     <div className="flex flex-col items-center text-xs focus:text-text-primary-light dark:focus:text-text-primary-dark">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 pb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -16,7 +16,7 @@ export default function BottomNavbar() {
                         Home
                     </div>
                </Link>
-               
+
                 <Link to="/list">
                     <div className="flex flex-col items-center text-xs focus:text-text-primary-light dark:focus:text-text-primary-dark">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 pb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
