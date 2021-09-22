@@ -89,12 +89,12 @@ export default function Register(props) {
                         <div className="text-sm text-center text-text-secondary-light dark:text-text-secondary-dark mt-2">
                             OR
                         </div>
-                        <button className="w-32 p-1 rounded-full w-full text-white bg-red-600 dark:bg-red-400 mt-2">
-                           <a href ={`${SERVER_URI}/oauth`}>
-                            <i class="fab fa-google pr-2"></i>
-                                Continue with Google
-                           </a>
-                        </button>
+                        <a href ={`${SERVER_URI}/oauth`}>
+                            <button className="w-32 p-1 rounded-full w-full text-white bg-red-600 dark:bg-red-400 mt-2">
+                                <i class="fab fa-google pr-2"></i>
+                                    Continue with Google
+                            </button>
+                        </a>
                     </div>
                     <div className="pb-1 text-sm text-gray-700 dark:text-gray-400 mt-3">
                             Have an account? <Link to="/login" className="hover:underline dark:text-indigo-400 text-indigo-600">

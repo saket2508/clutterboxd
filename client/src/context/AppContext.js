@@ -14,19 +14,22 @@ function AppProvider({ children }){
     const [ token, setToken ] = useState(localStorage.getItem('token'))
 
     useEffect(() => {
-        getAuthStatus()
-            .then(res => res.data)
-            .then(() => {
+        async function getData(){
+            try {
+                const res = await getAuthStatus()
+                const authData = await res.data
                 setIsAuthenticated(true)
                 setLoading(false)
-            }).catch(err => {
-                if(err.response.status === 403 || err.response.status === 401){
+            } catch (error) {
+                if(error.response.status != 500){
                     setIsAuthenticated(false)
                     setLoading(false)
-                } else{
+                } else {
                     setError(true)
                 }
-            })
+            }
+        }
+        getData()
     }, [token])
 
     useEffect(() => {
@@ -48,8 +51,8 @@ function AppProvider({ children }){
                 setWatchlist(watchlist)
                 setUserReviews(reviewsPostedByUser)
                 setLoading(false)
-            } catch (err) {
-                console.log(err.message)
+            } catch (error) {
+                console.log(error.message)
                 setError(true)
             }
         }

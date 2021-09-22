@@ -6,13 +6,13 @@ import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
-import { colors } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 import { UIThemeContext } from '../context/UIThemeContext'
 import { AppContext } from '../context/AppContext'
 import StarIcon from '@mui/icons-material/Star'
 import Button from '@mui/material/Button'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import axios from 'axios'
 
@@ -92,9 +92,7 @@ export default function AddReview(props) {
                         </IconButton>
                         <div className="text-xl dark:text-white font-medium">Post Review</div>
                             {loading===true 
-                                ? <Button style={{color:'white', backgroundColor: '#818CF8'}} size="small" variant="contained" disabled>
-                                    <CircularProgress style={{color:'white'}} size={22} thickness={6}/>
-                                    </Button>
+                                ? <LoadingButton loading style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} size="small" variant="contained" disabled>Posting</LoadingButton>
                                 : <Button type="submit" style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} size="small" variant="contained">POST</Button>
                             }
                         </div>
@@ -132,9 +130,7 @@ export default function AddReview(props) {
                         </div>
                         <div className='hidden sm:flex justify-end mt-3'>
                             {loading===true 
-                            ? <Button style={{color:'white', backgroundColor: '#818CF8'}} size="small" variant="contained" disabled>
-                                <CircularProgress style={{color:'white'}} size={22} thickness={6}/>
-                            </Button>
+                            ? <LoadingButton loading style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} size="small" variant="contained" disabled>Posting</LoadingButton>
                             : <Button type="submit" style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} size="small" variant="contained">POST</Button>
                             }
                         </div>

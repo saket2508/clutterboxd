@@ -7,10 +7,6 @@ body {
   margin: 0;
 }
 
-.errorImg{
-  background-image: url('./assets/error_img.png');
-}
-
 .dark body{
   background-color: black;
 }

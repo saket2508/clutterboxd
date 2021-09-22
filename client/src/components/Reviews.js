@@ -50,7 +50,7 @@ export default function Reviews({ reviews, media_type }) {
     }
 
     return (
-        <div id="reviews" className="container my-3 px-6 xl:px-20">
+        <div id="reviews" className="w-full my-3 px-6 xl:px-20">
             <div className="text-xl">
                 Reviews
             </div>
