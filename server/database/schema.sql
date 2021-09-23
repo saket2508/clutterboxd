@@ -36,7 +36,7 @@ CREATE TABLE reviews(
     reviewer VARCHAR NOT NULL,
     title TEXT NOT NULL,
     body TEXT NOT NULL,
-    rating INT NOT NULL,
+    rating DECIMAL NOT NULL,
     reviewedAt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (index, media_type, user_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)

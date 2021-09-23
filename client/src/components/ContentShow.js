@@ -10,8 +10,9 @@ import axios from 'axios'
 const ADD_TO_LIST = process.env.NODE_ENV === "production" ? 'https://netflixwatchlist.herokuapp.com/db/add/tv' : '/db/add/tv'
 const REMOVE_FROM_LIST = process.env.NODE_ENV === "production" ? 'https://netflixwatchlist.herokuapp.com/db/delete/tv' : '/db/delete/tv'
 
-export default function ContentShow({show, setReviewFormOpen}) {
+export default function ContentShow(props) {
 
+    const { show, setReviewFormOpen, notif, setNotif } = props
     let timerID = useRef(null)
     const { watchlist, setWatchlist, userReviews } = useContext(AppContext)
     const { colorTheme } = useContext(UIThemeContext)
@@ -29,7 +30,7 @@ export default function ContentShow({show, setReviewFormOpen}) {
     const [ userHasPostedReview, setUserHasPostedReview ] = useState(checkIfUserHasReviewedShow)
     const [ showInList, setShowInList ] = useState(checkIfShowIsInDb)
 
-    const [ notif, setNotif ] = useState()
+    // const [ notif, setNotif ] = useState()
     const [ isReadMore, setIsReadMore ] = useState(false)
 
     const toggleReadMore = () => {
@@ -244,12 +245,16 @@ export default function ContentShow({show, setReviewFormOpen}) {
             setShowInList(true)
             console.error(error.message)
             setNotif({message:'Could not remove show from list', success: false})
+            // Hide message
+            timerID = setTimeout(() => {
+                setNotif(null)
+            }, 4000)
         }
     }
 
 
     const Notification = ({ message, success }) => {
-        if(success === true){
+        if(success){
             return(
                 <div className="fixed bottom-20 mb-10 sm:mb-0 sm:bottom-10 left-0 right-0 flex justify-center w-100">
                     <div className="inline-block bg-green-600 text-white shadow rounded">

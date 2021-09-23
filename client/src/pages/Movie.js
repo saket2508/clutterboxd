@@ -17,6 +17,7 @@ export default function Movie() {
     const [ reviews, setReviews ] = useState()
     const [ movieInfo, setMovieInfo ] = useState()
     const [ reviewFormOpen, setReviewFormOpen ] = useState(false)
+    const [ notif, setNotif ] = useState()
     const media_type = 'movie'
 
     const { setError } = useContext(AppContext)
@@ -59,7 +60,10 @@ export default function Movie() {
                 <div>
                     <ContentMovie 
                         setReviewFormOpen = {setReviewFormOpen}
-                        movie={movieInfo}/>
+                        movie={movieInfo}
+                        notif = {notif}
+                        setNotif = {setNotif}
+                        />
                     <AddReview
                         id = {id}
                         media_type = {media_type}
@@ -67,6 +71,7 @@ export default function Movie() {
                         setReviews = {setReviews}
                         reviewFormOpen = {reviewFormOpen}
                         setReviewFormOpen = {setReviewFormOpen}
+                        setNotif = {setNotif}
                     />
                     <Reviews 
                         media_type = {media_type}

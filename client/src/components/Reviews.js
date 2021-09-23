@@ -36,8 +36,8 @@ export default function Reviews({ reviews, media_type }) {
     // LIST ALL REVIEWS
     if(!reviews || reviews.length === 0){
         return(
-            <div className="container my-3 px-6 xl:px-20 ">
-                <div className="font-heading font-medium text-xl">
+            <div className="my-3 px-6 xl:px-20 ">
+                <div className="text-xl">
                     Reviews
                 </div>
                 {media_type === 'movie' ? <p className="mt-3 font-light italic">

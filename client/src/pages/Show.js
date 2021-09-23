@@ -17,6 +17,7 @@ export default function Show() {
     const [ reviews, setReviews ] = useState()
     const [ showInfo, setShowInfo ] = useState()
     const [ reviewFormOpen, setReviewFormOpen ] = useState(false)
+    const [ notif, setNotif ] = useState()
     const media_type = 'tv'
     const { setError } = useContext(AppContext)
     
@@ -58,7 +59,10 @@ export default function Show() {
                 <>
                     <ContentShow 
                         setReviewFormOpen = {setReviewFormOpen}
-                        show={showInfo}/>
+                        show={showInfo}
+                        notif = {notif}
+                        setNotif = {setNotif}
+                        />
                     <AddReview
                         id = {id}
                         media_type = {media_type}
@@ -66,6 +70,7 @@ export default function Show() {
                         setReviews = {setReviews}
                         reviewFormOpen = {reviewFormOpen}
                         setReviewFormOpen = {setReviewFormOpen}
+                        setNotif = {setNotif}
                     />
                     <Reviews 
                         media_type = {media_type}

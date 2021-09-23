@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box'
 import Dialog from '@mui/material/Dialog'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
+import SaveIcon from '@mui/icons-material/Save';
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -22,14 +23,21 @@ export default function AddReview(props) {
 
     const { colorTheme } = useContext(UIThemeContext)
     const { currentUser, setUserReviews } = useContext(AppContext)
+    let timerID = useRef(null)
 
     // MODAL
-    const { setReviews, reviewFormOpen, setReviewFormOpen, id, media_type} = props
+    const { setReviews, reviewFormOpen, setReviewFormOpen, id, media_type, setNotif } = props
 
     const [ loading, setLoading ] = useState(false)
     const [ body, setBody ] = useState()
     const [ title, setTitle ] = useState()
     const [ rating, setRating ] = useState(0)
+
+    useEffect(() => {
+        return ()=>{
+            clearTimeout(timerID)
+        }
+    }, [])
 
     const handleClose = () => {
         setReviewFormOpen(false)
@@ -63,6 +71,11 @@ export default function AddReview(props) {
             clearForm()
         } catch (err) {
             console.log(err.message)
+            setReviewFormOpen(false)
+            setNotif({ success: false, message: 'Could not upload review' })
+            timerID = setTimeout(() => {
+                setNotif(null)
+            }, 4000)
         }
     }
 
@@ -81,7 +94,7 @@ export default function AddReview(props) {
             >
                 <form onSubmit={e => submitReviewData(e)} className="font-body p-6">
                     <div className="hidden sm:flex justify-between items-start">
-                        <div className="text-xl dark:text-white mb-4 font-medium">Post Review</div>
+                        <div className="text-xl dark:text-white mb-4 font-medium">Write a Review</div>
                         <IconButton size = "small" onClick={handleClose} aria-label="close">
                             <CloseIcon style={{color: colorTheme==='light'? '#9CA3AF' : '#4B5563', fontSize: 24}}/>
                         </IconButton>
@@ -90,11 +103,19 @@ export default function AddReview(props) {
                         <IconButton size = "small" onClick={handleClose} aria-label="close">
                             <CloseIcon style={{color: colorTheme==='light'? '#9CA3AF' : '#4B5563', fontSize: 24}}/>
                         </IconButton>
-                        <div className="text-xl dark:text-white font-medium">Post Review</div>
+                        <div className="text-xl dark:text-white font-medium">Write a Review</div>
                             {loading===true 
-                                ? <LoadingButton loading style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} size="small" variant="contained" disabled>Posting</LoadingButton>
-                                : <Button type="submit" style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} size="small" variant="contained">POST</Button>
-                            }
+                            ? <LoadingButton
+                                color="secondary"
+                                loading={true}
+                                loadingPosition="start"
+                                startIcon={<SaveIcon />}
+                                variant="contained"
+                            >
+                                Post
+                            </LoadingButton>
+                            : <Button type="submit" style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} variant="outlined">POST</Button>
+                        }
                         </div>
                     <p className="pb-4 text-text-secondary-light dark:text-gray-200 mt-4 mb-2 sm:m-0">
                         Give your review a title and don't forget to add a rating
@@ -116,8 +137,6 @@ export default function AddReview(props) {
                             <input value={title} placeholder="Title" id="title" onChange={e => setTitle(e.target.value)} className="textfield w-100 focus:outline-none bg-transparent dark:text-white" required/>
                         </div>
                         <div className="mt-2">
-                            {/* <textarea value={body} placeholder="Body" id="body" onChange={e => setBody(e.target.value)} rows={fullScreen ? 12 : 8} className="textfield w-100 h-100 sm:h-auto focus:outline-none bg-transparent dark:text-white" required/>
-                             */}
                              <TextareaAutosize
                                 placeholder = "Body"
                                 id = "body"
@@ -130,8 +149,16 @@ export default function AddReview(props) {
                         </div>
                         <div className='hidden sm:flex justify-end mt-3'>
                             {loading===true 
-                            ? <LoadingButton loading style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} size="small" variant="contained" disabled>Posting</LoadingButton>
-                            : <Button type="submit" style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} size="small" variant="contained">POST</Button>
+                                ? <LoadingButton
+                                    color="secondary"
+                                    loading={true}
+                                    loadingPosition="start"
+                                    startIcon={<SaveIcon />}
+                                    variant="contained"
+                                >
+                                    Post
+                                </LoadingButton>
+                                : <Button type="submit" style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} variant="outlined">POST</Button>
                             }
                         </div>
                     </div>

@@ -53,6 +53,7 @@ function AppProvider({ children }){
                 setLoading(false)
             } catch (error) {
                 console.log(error.message)
+                setLoading(false)
                 setError(true)
             }
         }
