@@ -1,7 +1,10 @@
 import React from 'react'
-import Rating from '@mui/material/Rating';
-import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating'
+import Box from '@mui/material/Box'
 import StarIcon from '@mui/icons-material/Star'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { Avatar } from '@mui/material'
+import { indigo } from '@mui/material/colors'
 
 export default function Reviews({ reviews, media_type }) {
 

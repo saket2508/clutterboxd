@@ -30,6 +30,15 @@ export default function AppRoutes(){
                         <Route exact path="/">
                             <Redirect to="/home"/>
                         </Route>
+                        <Route exact path="/login">
+                            <Redirect to="/home"/>
+                        </Route>
+                        <Route exact path="/register">
+                            <Redirect to="/home"/>
+                        </Route>
+                        <Route exact path="/callback">
+                            <Redirect to="/home"/>
+                        </Route>
                         <Route component={NotFound}/>
                    </Switch>
                 </main>
