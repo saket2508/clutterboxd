@@ -7,7 +7,6 @@ import CloseIcon from '@mui/icons-material/Close'
 import SaveIcon from '@mui/icons-material/Save';
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
-import CircularProgress from '@mui/material/CircularProgress'
 import { UIThemeContext } from '../context/UIThemeContext'
 import { AppContext } from '../context/AppContext'
 import StarIcon from '@mui/icons-material/Star'
@@ -60,10 +59,9 @@ export default function AddReview(props) {
                 rating : rating,
                 reviewer : currentUser.user_name
             }, { headers: { jwt_token: localStorage.token } })
-            console.log(res.data)
             const { newReview, success } = res.data
             if(success){
-                setReviews(reviews => [...reviews, newReview])
+                setReviews(reviews => [newReview, ...reviews])
                 setUserReviews(userReviews => [...userReviews, newReview])
                 console.log('Success!')
             }
@@ -114,7 +112,7 @@ export default function AddReview(props) {
                             >
                                 Post
                             </LoadingButton>
-                            : <Button type="submit" style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} variant="outlined">POST</Button>
+                            : <Button type="submit" style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5', border: 0}} variant="outlined">POST</Button>
                         }
                         </div>
                     <p className="pb-4 text-text-secondary-light dark:text-gray-200 mt-4 mb-2 sm:m-0">
@@ -158,7 +156,7 @@ export default function AddReview(props) {
                                 >
                                     Post
                                 </LoadingButton>
-                                : <Button type="submit" style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5'}} variant="outlined">POST</Button>
+                                : <Button type="submit" style={{color:'white', backgroundColor: colorTheme === 'light' ? '#818CF8' : '#4F46E5', border:0}} variant="outlined">POST</Button>
                             }
                         </div>
                     </div>

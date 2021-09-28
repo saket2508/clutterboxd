@@ -13,6 +13,10 @@ module.exports = {
         body:['Poppins', 'sans-serif'],
       },
       colors:{
+        body:{
+          light: colors.gray[100],
+          dark: colors.gray[900]
+        },
         primary:{
           light: colors.white,
           dark: colors.black
@@ -20,6 +24,10 @@ module.exports = {
         card:{
           light:colors.white,
           dark:colors.gray[800]
+        },
+        outline:{
+          light: colors.gray[300],
+          dark: colors.gray[800]
         },
         navbar: {
           light:colors.white,

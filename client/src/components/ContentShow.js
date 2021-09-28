@@ -97,7 +97,7 @@ export default function ContentShow(props) {
                         name="read-only"
                         precision={0.5}
                         value={rating_out_of_five}
-                        emptyIcon={<StarIcon style={{ opacity: 0.50 }} fontSize="inherit" />}
+                        emptyIcon={<StarIcon fontSize="inherit" />}
                         readOnly
                     />
                 </Box>

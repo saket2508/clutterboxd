@@ -109,7 +109,7 @@ export default function ContentMovie(props) {
                         name="read-only"
                         precision={0.5}
                         value={rating_out_of_five}
-                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                        emptyIcon={<StarIcon fontSize="inherit" />}
                         readOnly
                     />
                </Box>

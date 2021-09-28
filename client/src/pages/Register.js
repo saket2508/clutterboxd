@@ -52,8 +52,8 @@ export default function Register(props) {
         <div className="container">
             <div className="pt-10 flex justify-center">
                 <div className="bg-white dark:bg-card-dark border border-gray-300 dark:border-transparent rounded mx-4 px-6 py-4 w-full md:w-3/4 lg:w-1/2 xl:w-1/3">
-                    <div className="mt-1 text-center font-bold tracker-wide light:text-gray-700 dark:text-white text-xl">
-                        NETFLIX WATCHLIST
+                    <div className="mt-1 text-center font-bold uppercase tracker-wide light:text-gray-700 dark:text-white text-xl">
+                        Clutterboxd
                     </div>
                     <p className="leading-snug text-text-secondary-light dark:text-text-secondary-dark my-3 mt-3 text-center text-sm">
                         Sign up to browse movies and shows and create a watchlist.

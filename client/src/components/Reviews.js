@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { UIThemeContext } from '../context/UIThemeContext'
 import Rating from '@mui/material/Rating'
 import Box from '@mui/material/Box'
 import StarIcon from '@mui/icons-material/Star'
@@ -7,6 +8,8 @@ import { Avatar } from '@mui/material'
 import { indigo } from '@mui/material/colors'
 
 export default function Reviews({ reviews, media_type }) {
+
+    const { colorTheme } = useContext(UIThemeContext)
 
     const LastUpdated = ({timestamp}) => {
         let date_posted = new Date(timestamp)
@@ -60,12 +63,24 @@ export default function Reviews({ reviews, media_type }) {
             <div className="mt-3">
                 {reviews.map((review, idx) => {
                     return(
-                        <div className="p-2 bg-white dark:bg-card-dark rounded shadow mb-4" key={idx}>
-                            <div className="text-lg font-heading pt-1">
+                        <div className="lg:w-4/5 p-2 dark:bg-body-dark rounded-xl border border-outline-light dark:border-outline-dark mb-4" key={idx}>
+                            <div className="italic text-lg pt-1">
                                 {review.title}
                             </div>
-                            <div className="text-sm pt-1 font-heading font-medium">
-                                {review.reviewer}
+                            <div className="flex items-center">
+                                <Avatar
+                                    sx={{ 
+                                        width: 26, 
+                                        height: 26, 
+                                        bgcolor: colorTheme === 'light' ? '#818CF8' : '#4F46E5' ,
+                                        color: 'white'
+                                    }}
+                                >
+                                    {review.reviewer[0].toUpperCase()}
+                                </Avatar>
+                                <div className="text-sm pl-1 pt-1 font-medium">
+                                    {review.reviewer}
+                                </div>
                             </div>
                             <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark pt-1">
                                 <LastUpdated timestamp={review.reviewedat}/>

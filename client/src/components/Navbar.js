@@ -19,8 +19,8 @@ export default function Navbar() {
         <div className="fixed top-0 bg-white dark:bg-navbar-dark dark:text-white shadow px-6 py-4 w-full z-50">
             <div className="hidden md:flex w-100 justify-between items-center">
                         <Link to = '/home'>
-                            <div className="font-bold text-gray-700 dark:text-white tracker-wide">
-                                NETFLIX WATCHLIST
+                            <div className="font-bold text-gray-700 dark:text-white tracker-wide uppercase">
+                                clutterboxd
                             </div>
                         </Link>
                 <div className="flex items-end">

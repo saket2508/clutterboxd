@@ -42,6 +42,7 @@ export default function Movie() {
             try {
                 const res = await axios.get(`${GET_REVIEWS_URI}/${media_type}/${id}`, { headers: { jwt_token: localStorage.token } })
                 const { reviews, success } = res.data
+                reviews.sort((a, b) => b.reviewedat - a.reviewedat)
                 if(success){
                     setReviews(reviews)
                 }
