@@ -41,9 +41,9 @@ export default function Show() {
             try {
                 const res =  await axios.get(`${GET_REVIEWS_URI}/${media_type}/${id}`, { headers: { jwt_token: localStorage.token } })
                 const { reviews, success } = res.data
-                reviews.sort((a, b) => b.reviewedat - a.reviewedat)
+                let datesortedreviews = reviews.sort((a, b) => new Date(b.reviewedat) - new Date(a.reviewedat))
                 if(success){
-                    setReviews(reviews)
+                    setReviews(datesortedreviews)
                 }
             } catch (err) {
                 console.error(err.message)
@@ -67,6 +67,7 @@ export default function Show() {
                     <AddReview
                         id = {id}
                         media_type = {media_type}
+                        info = {showInfo}
                         reviews = {reviews}
                         setReviews = {setReviews}
                         reviewFormOpen = {reviewFormOpen}

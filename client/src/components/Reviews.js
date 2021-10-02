@@ -63,11 +63,8 @@ export default function Reviews({ reviews, media_type }) {
             <div className="mt-3">
                 {reviews.map((review, idx) => {
                     return(
-                        <div className="lg:w-4/5 p-2 dark:bg-body-dark rounded-xl border border-outline-light dark:border-outline-dark mb-4" key={idx}>
-                            <div className="italic text-lg pt-1">
-                                {review.title}
-                            </div>
-                            <div className="flex items-center">
+                        <div className="flex">
+                            <div className="pr-1 pt-2">
                                 <Avatar
                                     sx={{ 
                                         width: 26, 
@@ -78,28 +75,33 @@ export default function Reviews({ reviews, media_type }) {
                                 >
                                     {review.reviewer[0].toUpperCase()}
                                 </Avatar>
-                                <div className="text-sm pl-1 pt-1 font-medium">
+                            </div>
+                            <div className="w-full lg:w-4/5 p-2 dark:bg-body-dark rounded-2xl border border-outline-light dark:border-outline-dark mb-4" key={idx}>
+                                <div className="text-sm pt-1 font-medium">
                                     {review.reviewer}
                                 </div>
+                                <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark pt-1">
+                                    <LastUpdated timestamp={review.reviewedat}/>
+                                </div>
+                                <div className="pt-1">
+                                    <Box component="fieldset" borderColor="transparent">
+                                            <Rating
+                                                name="read-only"
+                                                precision={0.5}
+                                                value={review.rating}
+                                                icon={<StarIcon/>}
+                                                emptyIcon={<StarIcon color='inherit'/>}
+                                                readOnly
+                                            />
+                                    </Box>
+                                </div>
+                                {/* <div className="italic text-lg pt-1">
+                                    {review.title}
+                                </div> */}
+                                <p className="pt-1 font-light">
+                                    {review.body}
+                                </p>
                             </div>
-                            <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark pt-1">
-                                <LastUpdated timestamp={review.reviewedat}/>
-                            </div>
-                            <div className="pt-1">
-                                <Box component="fieldset" borderColor="transparent">
-                                        <Rating
-                                            name="read-only"
-                                            precision={0.5}
-                                            value={review.rating}
-                                            icon={<StarIcon/>}
-                                            emptyIcon={<StarIcon color='inherit'/>}
-                                            readOnly
-                                        />
-                                </Box>
-                            </div>
-                            <p className="pt-1 font-light">
-                                {review.body}
-                            </p>
                         </div>
                     )
                 })}

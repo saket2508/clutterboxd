@@ -11,7 +11,7 @@ import NotFound from '../components/NotFound'
 export default function AppRoutes(){
     return (
         <Router>
-            <div className="w-full font-body text-black dark:text-white">
+            <div className="w-full min-h-screen md:h-full font-body text-black dark:text-white">
                  <Navbar/>
                 <main className="mt-20 mb-20 sm:mb-0">
                    <Switch>

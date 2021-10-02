@@ -34,7 +34,7 @@ CREATE TABLE reviews(
     index VARCHAR NOT NULL,
     media_type VARCHAR NOT NULL,
     reviewer VARCHAR NOT NULL,
-    title TEXT NOT NULL,
+    title TEXT,
     body TEXT NOT NULL,
     rating DECIMAL NOT NULL,
     reviewedAt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
