@@ -1,4 +1,4 @@
-## Netflix Watchlist
+## Clutterboxd - A Letterboxd Clone
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/81eb625f-161e-4f3d-a46e-864c693e1b9a/deploy-status)](https://app.netlify.com/sites/netflixwatchlist/deploys)
 

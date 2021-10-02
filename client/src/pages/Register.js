@@ -81,7 +81,7 @@ export default function Register(props) {
                             {loading===false ? <button type="submit" className="w-32 bg-indigo-500 text-white p-1 rounded-full w-full">
                                 Sign up
                             </button> : <button type="submit" className="w-32 bg-indigo-300 text-white p-1 rounded-full w-full" disabled>
-                                Loading...
+                                Signing up...
                             </button>}
                        </div>
                     </form>

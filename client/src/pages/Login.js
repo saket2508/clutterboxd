@@ -72,7 +72,7 @@ export default function Login(props) {
                             {loading===false ? <button type="submit" className="w-32 bg-indigo-500 text-white p-1 rounded-full w-full">
                                Sign in 
                             </button> : <button type="submit" className="w-32 bg-indigo-300 text-white p-1 rounded-full w-full" disabled>
-                               Loading... 
+                               Signing in... 
                             </button>}
                        </div>
                     </form>
