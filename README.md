@@ -20,12 +20,12 @@
 ## Screenshots
 
 <img src="client/src/assets/home_screen.png"/>
+<br/> 
+<img src="client/src/assets/show_info.png"/>
 <br/>
-<img src="client/src/assets/show.png"/>
+<img src="client/src/assets/show_info_2.png"/>
 <br/>
-<img src="client/src/assets/movie.png"/>
-<br/>
-<img src="client/src/assets/list.png"/>
+<img src="client/src/assets/watch_list.png"/>
 <br/>
 
 ## Installation
